@@ -169,8 +169,342 @@ cp /opt/HBmonitor2/config_SAMPLE.py /opt/HBmonitor2/config.py
 #cp /opt/HBmonitor/utils/hbmon.service /lib/systemd/system/
 cp /opt/HBmonitor2/index_template.html /opt/HBmonitor2/index.html
 #nano /opt/HBmonitor/config.py
+cat > /opt/HBmonitor2/templates/main_table.html  <<- "EOF"
+{% include 'buttons.html' ignore missing %}
+<fieldset style="background-color:#f0f0f0f0;margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+<legend><b><font color="#000">&nbsp;.: DMR Server activity :.&nbsp;</font></b></legend>
+{% if _table['MASTERS']|length >0 %}
+ <table style="table-layout:fixed;font: 10pt arial, sans-serif;margin-top:4px;margin-bottom:4px;" width=100%>
+    <tr style="height:30px;font: 10pt arial, sans-serif;{{ themec }}">
+        <th style='width: 20%;'>Systems M&P</th>
+        <th style='width: 40%;'>Source</th>
+        <th style='width: 40%;'>Destination</th>
+    </tr>
+    {% for _master in _table['MASTERS'] %}    
+    {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].items() %}
+    {% if _cdata[1]['TS'] == True or _cdata[2]['TS'] == True %}
+    <tr style="background-color:#a1dcb5;">
+        {% if _cdata[1]['TRX'] == "RX" %}
+        <td style="font-weight:bold; padding-left: 20px; text-align:center;color:#464646;">M: {{_master}} </td>
+        <td style="font: 9.5pt arial, sans-serif;font-weight: 600;color:#0d1a81;">{{ _cdata[1]['SUB']|safe }} [<span style="align-items: center;justify-content:center;font-size: 8pt;font-weight:600;color:brown;">TS {{ 1 if _cdata[1]['TS'] == True else 2 }}</span>]</td>
+        <td style="font: 9.5pt arial, sans-serif;font-weight: 600;color:#b5651d;">{{ _cdata[1]['DEST']|safe }}</td>
+        {% endif %}
+        {% if _cdata[2]['TRX'] == "RX" %}
+        <td style="font-weight:bold; padding-left: 20px; text-align:center;color:#464646"><b>M: {{_master}} </td>
+        <td style="font: 9.5pt arial, sans-serif;font-weight: 600;color:#0d1a81;">{{ _cdata[2]['SUB']|safe }} [<span style="align-items: center;justify-content:center;font-size: 8pt;font-weight:600;color:brown;">TS {{ 1 if _cdata[1]['TS'] == True else 2 }}</span>]</td>
+        <td style="font: 9.5pt arial, sans-serif;font-weight: 600;color:#b5651d;">{{ _cdata[2]['DEST']|safe }}</td>
+        {% endif %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
 
+{% else %}
+         <table style='width:1100px; font: 13pt arial, sans-serif; margin-top:8px;'>
+             <tr style='border:none; background-color:#f1f1f1;'>
+             <td style='border:none;height:60px;'><font color=brown><b><center>Waiting for Data from FreeDMR Server ...</center></b></td>
+             </tr>
+            </table>
+ {% endif %}
+    {% for _peer, _pdata  in _table['PEERS'].items() %}
+    {% if _pdata[1]['TS'] == True or _pdata[2]['TS'] == True %}
+    <tr style="background-color:#f9f9f9f9;">
+        {% if _pdata[1]['TRX'] == "RX" %}
+        <td style="font-weight:bold; padding-left: 20px; text-align:center;color:#464646;">P: {{_peer}} </td>
+        <td style="font: 9.5pt arial, sans-serif;font-weight: 600;color:#0d1a81;">{{ _pdata[1]['SUB']|safe }} [<span style="align-items: center;justify-content:center;font-size: 8pt;font-weight:600;color:brown;">TS {{ 1 if _pdata[1]['TS'] == True else 2 }}</span>]</td>
+        <td style="font: 9.5pt arial, sans-serif;font-weight: 600;color:#b5651d;">{{ _cdata[1]['DEST']|safe }}</td>
+        {% endif %}
+        {% if _pdata[2]['TRX'] == "RX" %}
+        <td style="font-weight:bold; padding-left: 20px; text-align:center;color:#464646;">P: {{_peer}} </td>
+        <td style="font: 9.5pt arial, sans-serif;font-weight: 600;color:#0d1a81;">{{ _pdata[2]['SUB']|safe }} [<span style="align-items: center;justify-content:center;font-size: 8pt;font-weight:600;color:brown;">TS {{ 1 if _pdata[1]['TS'] == True else 2 }}</span>]</td>
+        <td style="font: 9.5pt arial, sans-serif;font-weight: 600;color:#b5651d;">{{ _pdata[2]['DEST']|safe }}</td>
+        {% endif %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+    <tr style="background-color:#f0f0f0;"><td colspan=3 height=5pt><hr style="height:1px;border:none;color:#f0f0f0;background-color:#f0f0f0;"></hr></td></tr>
+
+{% if _table['OPENBRIDGES']|length >0 %}
+    <tr style="background-color:#265b8a;" "height:30px;width:1100px; font: 10pt arial, sans-serif;{{ themec }}">
+        <th>Systems OpenBridge</th>
+        <th colspan=2 '>Active Incoming Calls</th>
+    </tr>
+    {% for _openbridge in _table['OPENBRIDGES'] %}
+    {% set rx = namespace(value=0) %}
+    {% if _table['OPENBRIDGES'][_openbridge]['STREAMS']|length >0 %}
+       {% for entry in _table['OPENBRIDGES'][_openbridge]['STREAMS'] if _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][0]=='RX' %}
+         {% set rx.value=1 %}
+       {% endfor %}
+       {% if rx.value == 1 %}    
+       <tr style="background-color:#de8184;">
+         <td style="font-weight:bold; padding-left: 20px; text-align:center;"> {{ _openbridge}} </td>
+         <td colspan=2 style="background-color:#a1dcb5; font: 9pt arial, sans-serif; font-weight: 600; color:#464646;">
+         {% for entry in _table['OPENBRIDGES'][_openbridge]['STREAMS']  if _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][0] == 'RX' %}[<span style="color:#008000;">{{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][0] }}</span>: <font color=#0065ff> {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][1] }}</font> >> <font color=#b5651d> {{ _table['OPENBRIDGES'][_openbridge]['STREAMS'][entry][2] }}</font>]&nbsp; {% endfor %}
+        </td>
+      </tr>
+      {% endif %}
+   {% endif %}
+   {% endfor %}
+{% endif %}
+</table>
+</fieldset>
+
+{% if _table['SETUP']['LASTHEARD'] == True %}
+  {% include 'lastheard.html' ignore missing %}
+{% endif %}
+<fieldset style="background-color:#f0f0f0f0;margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+<legend><b><font color="#000">&nbsp;.: Connected to DMR Server :.&nbsp;</font></b></legend>
+<table style="table-layout:fixed;width:100%; font: 10pt arial, sans-serif;font-weight:600;margin-top:5px;margin-bottom:5px;" width=100%>
+{% if _table['MASTERS']|length >0 %}
+<tr style="background-color:#d0d0d0;"><td>
+<br>
+<div style="text-align:left;"><span style="color:#464646;font-weight:600;line-height:1.4;">&nbsp;&nbsp;LINKS:</span></div>
+<div style="text-align:left;font:9.5pt arial, sans-serif;font-weight:bold;margin-left:25px; margin-right:25px;line-height:1.4;white-space:normal;">
+    {% for _master in _table['MASTERS'] %}    
+    {% if _table['MASTERS'][_master]['PEERS']|length >0 %}
+    {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].items() %}
+    <span class="tooltip" style="border-bottom: 0px dotted white;">
+    <a style="border-bottom: 0px dotted white;font: 9.5pt arial,sans-serif;font-weight:bold;color:#0066ff;" target="_blank" href="http://www.qrz.com/db/{{_cdata['CALLSIGN']}}"><b>{{_cdata['CALLSIGN']}}</b></a>
+    <span class="tooltiptext" style="left:115%;top:-10px;">
+        <span style="font: 9pt arial,sans-serif;color:#3df8f8">
+        &nbsp;&nbsp;&nbsp;<b>DMR ID</b>: <b><font color=yellow>{{ _client }}</b></font><br>
+        {% if _cdata['RX_FREQ'] == 'N/A' and _cdata['TX_FREQ'] == 'N/A' %}
+             &nbsp;&nbsp;&nbsp;<b>Type: <font color=yellow>IP Network</font></b><br>
+        {% else %} 
+            &nbsp;&nbsp;&nbsp;<b>Type: <font color=yellow>Radio</font></b> ({{ _cdata['SLOTS'] }})<br>
+        {% endif %}
+        &nbsp;&nbsp;&nbsp;<b>Hardware</b>: {{_cdata['PACKAGE_ID'] }}
+        <br>&nbsp;&nbsp;&nbsp;<b>Soft_Ver</b>: {{_cdata['SOFTWARE_ID'] }}
+        <br>&nbsp;&nbsp;&nbsp;<b>Info</b>: {{_cdata['LOCATION']}}
+         <br>&nbsp;&nbsp;&nbsp;<b>Master</b>: <font color=yellow>{{_master}}</font>
+        </span></span></span>&nbsp;
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+{% if _table['PEERS']|length >0 %}
+<br>
+<div style="text-align:left;"><span style="color:#464646;font-weight:600;line-height:1.8;">&nbsp;&nbsp;PEERS:</span></div>
+<div style="text-align:left;font:9.5pt arial, sans-serif;font-weight:bold;margin-left:25px; margin-right:25px;line-height:1.6;white-space:normal;">
+    {% for _peer, _pdata  in _table['PEERS'].items() %}
+    <span class="tooltip" style="bmargin-bottom:6px;order-bottom: 1px dotted white;{{'background-color:#98FB98; color:#464646;' if _table['PEERS'][_peer]['STATS']['CONNECTION'] == 'YES' else 'background-color:#ff0000; color:white;'}}"><b>&nbsp;&nbsp;{{_peer}}&nbsp;&nbsp;</b>
+    {% if _table['PEERS'][_peer]['STATS']['CONNECTION'] == 'YES' %}
+    <span class="tooltiptext" style="top:120%;left:50%;margin-left:-70%;width:100px;padding: 2px 0;">
+    <center><font color=white>Connected</font></center>
+    </span>
+   {% else %}
+    <span class="tooltiptext" style="top:120%;left:50%;margin-left:-70%;width:100px;padding: 2px 0;">
+    <center><b><font color=white>Disconnected</font></center>
+    </span>
+    {% endif %}
+    </span>&nbsp;
+ {% endfor %}
+</div>
+{% endif %}
+<br>
+</td></tr></table>
+</fieldset>
+
+
+EOF
+cat > /opt/HBmonitor2/templates/masters_table.html  <<- "EOF"
+{% include 'buttons.html' ignore missing %}
+<fieldset style="background-color:#e0e0e0e0; margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+<legend><b><font color="#000">&nbsp;.: Masters status :.&nbsp;</font></b></legend>
+{% if _table['MASTERS']|length >0 %}
+<table style="table-layout:fixed;width:100%; font: 10pt arial, sans-serif; margin-top:5px; margin-bottom:5px;">
+    <tr style="font: 10pt arial, sans-serif;{{ themec }}">
+        <th style='width: 120px;'>HB Protocol<br>Master Systems</th>
+        <th style='width: 160px;'>Callsign (DMR Id)<br>Info</th>
+        <th style='width: 90px;'>Time Connected</th>
+        <th style='width: 40px;'>Slot</th>
+        <th style='width: 50%;'>Source</th>
+        <th style='width: 40%;'>Destination</th>
+    </tr>
+
+    {% for _master in _table['MASTERS'] %}    
+    {% if ((_table['MASTERS'][_master]['PEERS']|length==0 or _table['MASTERS'][_master]['PEERS']|length>0) and emaster==True) or (_table['MASTERS'][_master]['PEERS']|length>0 and emaster==False) %}
+
+    <tr style="background-color:#f9f9f9f9;">
+        <td style="font-weight:bold" rowspan="{{ (_table['MASTERS'][_master]['PEERS']|length * 2) +1 }}"> {{_master}}<br><div style="font: 8pt arial, sans-serif">{{_table['MASTERS'][_master]['REPEAT']}}</div></td>
+    </tr>
+    {% for _client, _cdata in _table['MASTERS'][_master]['PEERS'].items() %}
+    <tr style="background-color:#f9f9f9f9;">
+        <td rowspan="2"><div class="tooltip"><b><font color=#0066ff>{{ _cdata['CALLSIGN']}}</font> 
+        </b><span style="font: 8pt arial,sans-serif">(Id: {{ _client }})</span><span class="tooltiptext">
+        <span style="font: 9pt arial,sans-serif;color:#FFFFFF">
+        {% if _cdata['RX_FREQ'] == 'N/A' and _cdata['TX_FREQ'] == 'N/A' %}
+             &nbsp;&nbsp;&nbsp;<b>Type: <font color=yellow>IP Network</font></b><br>
+        {% else %} 
+            &nbsp;&nbsp;&nbsp;<b>Type: <font color=yellow>Radio</font></b> ({{ _cdata['SLOTS'] }})<br>
+        {% endif %}
+            &nbsp;&nbsp;&nbsp;<b>Soft_Ver</b>: {{_cdata['SOFTWARE_ID'] }}
+        <br>&nbsp;&nbsp;&nbsp;<b>Hardware</b>: {{_cdata['PACKAGE_ID'] }}</span></span></div>
+        <br><div style="font: 92% arial,sans-serif; color:#b5651d;font-weight:bold">{{_cdata['LOCATION']}}</div></td>
+        <td style="background-color:#e8ffec;font: 10pt arial, sans-serif;" rowspan="2">{{ _cdata['CONNECTED'] }}</td>
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _cdata[1]['BGCOLOR'] if _cdata[1]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _cdata[1]['COLOR'] if _cdata[1]['COLOR']|length !=0 else '000000' }}"><span style="color:#{{ _cdata[1]['COLOR'] if _cdata[1]['BGCOLOR'] == 'ff6347' else 'b70101'}}">TS1</span></td>
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _cdata[1]['BGCOLOR'] if _cdata[1]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _cdata[1]['COLOR'] if _cdata[1]['COLOR']|length !=0 else '000000' }}">{{ _cdata[1]['SUB']|safe }}</td>
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _cdata[1]['BGCOLOR'] if _cdata[1]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _cdata[1]['COLOR'] if _cdata[1]['COLOR']|length !=0 else '000000' }}">{{ _cdata[1]['DEST']|safe }}</td>
+        <tr style="background-color:#f9f9f9f9;">
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _cdata[2]['BGCOLOR'] if _cdata[2]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _cdata[2]['COLOR'] if _cdata[2]['COLOR']|length !=0 else '000000' }}"><span style="color:#{{ _cdata[2]['COLOR'] if _cdata[2]['BGCOLOR'] == 'ff6347' else '3a4aa6'}}">TS2</span></td>
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _cdata[2]['BGCOLOR'] if _cdata[2]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _cdata[2]['COLOR'] if _cdata[2]['COLOR']|length !=0 else '000000' }}">{{ _cdata[2]['SUB']|safe }}</td>
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _cdata[2]['BGCOLOR'] if _cdata[2]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _cdata[2]['COLOR'] if _cdata[2]['COLOR']|length !=0 else '000000' }}">{{ _cdata[2]['DEST']|safe }}</td>
+        </tr>
+
+    </tr>    
+     {% endfor %}
+   {% endif %}
+{% endfor %}
+</table>
+{% else %}
+         <table style='width:100%; font: 13pt arial, sans-serif; margin-top:8px;margin-bottom:8px;'>
+             <tr style='border:none; background-color:#f9f9f9f9;'>
+             <td style='border:none;height:60px;'><font color=brown><b><center>Waiting for data from the DMR server ...</center></b></td>
+             </tr>
+            </table>
+{% endif %}
+</fieldset>
+
+<fieldset style="background-color:#e0e0e0e0;margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+<fieldset class="big">
+  <legend><b>.: Peers status :.</b></legend>
+ {% if _table['PEERS']|length >0 %}
+<table style="table-layout:fixed;width:100%; font: 10pt arial, sans-serif; margin-top:5px;margin-bottom:5px;">
+    <tr style="font: 10pt arial, sans-serif;{{ themec }}">
+        <th style='width: 120px;'>HB Protocol<br>Peer Systems</th>
+        <th style='width: 160px;'>Callsign (DMR Id)<br>Info</th>
+        <th style='width: 90px;'>Connected<br>TX/RX/Lost</th>
+        <th style='width: 42px;'>Slot</th>
+        <th style='width: 50%;'>Source</th>
+        <th style='width: 40%;'>Destination</th>
+    </tr>
+    {% for _peer, _pdata  in _table['PEERS'].items() %}
+    <tr style="background-color:#f9f9f9f9;">
+        <td style="font-weight:bold" rowspan="2"> {{ _peer}}<br><span style="font-weight:normal; font: 7pt arial, sans-serif;">Mode: {{ _table['PEERS'][_peer]['MODE'] }}</span></td>
+        <td rowspan="2"><div class="tooltip"><b><font color=#0066ff>{{_table['PEERS'][_peer]['CALLSIGN']}}</font> </b><span style="font-weight:normal; font: 8pt arial, sans-serif;">(Id: {{ _table['PEERS'][_peer]['RADIO_ID'] }})</span><span class="tooltiptext" style="width:170px;">&nbsp;&nbsp;&nbsp;<b>Linked Time Slot: <font color=yellow>{{ _table['PEERS'][_peer]['SLOTS'] }}</font></b></span></div><br><div style="font: 92% arial, sans-serif; color:#b5651d;font-weight:bold">{{_table['PEERS'][_peer]['LOCATION']}}</div></td>
+        <td rowspan="2"; style="font: 9pt arial, sans-serif;{{ 'background-color:#98FB98' if _table['PEERS'][_peer]['STATS']['CONNECTION'] == 'YES' else ';background-color:#ff704d' }}">{{ _table['PEERS'][_peer]['STATS']['CONNECTED'] }}<br><div style="font: 8pt arial, sans-serif">{{ _table['PEERS'][_peer]['STATS']['PINGS_SENT'] }} / {{ _table['PEERS'][_peer]['STATS']['PINGS_ACKD'] }} / {{ _table['PEERS'][_peer]['STATS']['PINGS_SENT'] - _table['PEERS'][_peer]['STATS']['PINGS_ACKD'] }}</div></td>
+        
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _pdata[1]['BGCOLOR'] if _pdata[1]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _pdata[1]['COLOR'] if _pdata[1]['COLOR']|length !=0 else '000000' }}"><span style="color:#b70101">TS1</span></td>
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _pdata[1]['BGCOLOR'] if _pdata[1]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _pdata[1]['COLOR'] if _pdata[1]['COLOR']|length !=0 else '000000' }}">{{ _pdata[1]['SUB']|safe }}</td>
+        <td style="font: 10pt arial, sans-serif;color:#464646;background-color:#{{ _pdata[1]['BGCOLOR'] if _pdata[1]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _pdata[1]['COLOR'] if _pdata[1]['COLOR']|length !=0 else '000000' }}">{{ _pdata[1]['DEST']|safe }}</td>
+        <tr style="background-color:#f9f9f9f9;">
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _pdata[2]['BGCOLOR'] if _pdata[2]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _pdata[2]['COLOR'] if _pdata[2]['COLOR']|length !=0 else '000000' }}"><span style="color:#{{ _pdata[2]['COLOR'] if _pdata[2]['BGCOLOR'] == 'ff6347' else '3a4aa6'}}">TS2</span></td>
+        <td style="font: 10pt arial, sans-serif;background-color:#{{ _pdata[2]['BGCOLOR'] if _pdata[2]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _pdata[2]['COLOR'] if _pdata[2]['COLOR']|length !=0 else '000000' }}">{{ _pdata[2]['SUB']|safe }}</td>
+        <td style="font: 10pt arial, sans-serif;color:#464646;background-color:#{{ _pdata[2]['BGCOLOR'] if _pdata[2]['BGCOLOR']|length !=0 else 'f9f9f9f9' }}; color:#{{ _pdata[2]['COLOR'] if _pdata[2]['COLOR']|length !=0 else '000000' }}">{{ _pdata[2]['DEST']|safe }}</td>
+        </tr>
+    </tr>
+  {% endfor %}
+</table>
+ {% else %}
+         <table style='width:100%; font: 13pt arial, sans-serif; margin-top:8px;margin-bottom:8px;'>
+             <tr style='border:none; background-color:#f9f9f9f9;'>
+             <td style='border:none;height:60px;'><font color=brown><b><center>Waiting for data from the DMR server ... or not defined on DMR server</center></b></td>
+             </tr>
+            </table>
+ {% endif %}
+</fieldset>
+
+
+EOF
+sudo cat > /opt/HBmonitor2/templates/buttons.php <<- "EOF"
+<div style="width: 1100px;">
+<!-- HBMonitor buttons HTML code -->
+<a href="/"><button class="button link">&nbsp;Home&nbsp;</button></a>
+{% if auth == True %}
+&nbsp;
+<div class="dropdown">
+  <button class="dropbtn">&nbsp;Admin Area&nbsp;</button>
+  <div class="dropdown-content">
+    <a href="/masters">&nbsp;Masters&nbsp;</a>
+    <a href="/peers">&nbsp;Peers&nbsp;</a>
+    <a href="/opb">&nbsp;OpenBridge&nbsp;</a>
+ {% if dbridges == True %}
+    <a href="/bridges">&nbsp;Bridges&nbsp;</a>
+ {% endif %}
+    <a href="/moni">&nbsp;Monitor&nbsp;</a>
+    <a href="/sinfo">&nbsp;System Info&nbsp;</a>
+  </div>
+</div>
+{% else %}
+&nbsp;
+<a href="/masters"><button class="button link">&nbsp;Masters & Peers&nbsp;</button></a>
+&nbsp;
+<!--
+<a href="/peers"><button class="button link">&nbsp;Peers&nbsp;</button></a>
+&nbsp;
+-->
+<a href="/opb"><button class="button link">&nbsp;OpenBridge&nbsp;</button></a>
+{% if dbridges == True %}
+&nbsp;
+<a href="/bridges"><button class="button link">&nbsp;Bridges&nbsp;</button></a>
+ {% endif %}
+&nbsp;
+<a href="/moni"><button class="button link">&nbsp;Monitor&nbsp;</button></a>
+&nbsp;
+<a href="/sinfo"><button class="button link">&nbsp;System Info&nbsp;</button></a>
+&nbsp;
+<!--
+{% endif %}
+<a href="/info"><button class="button link">&nbsp;Info&nbsp;</button></a>
+&nbsp;
+<!-- Own buttons HTML code -->
+<!-- link to long lastheard
+<a target='_blank' href="http://192.168.1.1/log.php"><button class="button link">&nbsp;Lastheard&nbsp;</button></a>
+&nbsp;
+
+-->
+
+<!-- Example of buttons dropdown HTML code -->
+<!--
+<p></p>
+<div class="dropdown">
+  <button class="dropbtn">Admin Area</button>
+  <div class="dropdown-content">
+    <a href="/masters">Master&Peer</a>
+    <a href="/opb">OpenBridge</a>
+    <a href="/moni">Monitor</a>
+  </div>
+</div>
+&nbsp;
+<div class="dropdown">
+  <button class="dropbtn">Reflectors</button>
+  <div class="dropdown-content">
+    <a target='_blank' href="#">YSF Reflector</a>
+    <a target='_blank' href="#">XLX950</a>
+  </div>
+</div>
+-->
+</div>
+<p></p>
+
+
+EOF
+sed -i 's/localhost_2-day.png/localhost_1-day.png/' /opt/HBmonitor2/templates/sysinfo_template.html
+sed '39 a <!--' -i /opt/HBmonitor2/templates/sysinfo_template.html
+sed '43 a -->' -i /opt/HBmonitor2/templates/sysinfo_template.html
 sed -i "s/<br><br>.*/ Proyect : <a href=\"https:\/\/gitlab.com\/hp3icc\/Easy-HBL\/\" target=\"_blank\">Easy-HBL+<\/a><br\/><br\/><\/span>/g" /opt/HBmonitor2/templates/*.html
+
+apps=("rrdtool")
+
+for app in "${apps[@]}"
+do
+    # Verificar apps
+    if ! dpkg -s "$app" >/dev/null 2>&1; then
+        # app no instalada
+        sudo apt-get install -y "$app"
+    else
+        # app ya instalada
+        echo "$app ya instalada"
+    fi
+done
+
+sed -i "s/HBMonv2/HBmonitor2/g"  /opt/HBmonitor2/sysinfo/*.sh
+sudo chmod +x /opt/HBmonitor2/sysinfo/*
+sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
+sh /opt/HBmonitor2/sysinfo/graph.sh
+sh /opt/HBmonitor2/sysinfo/cpu.sh
+
 
 sed -i "s/WEB_AUTH =.*/WEB_AUTH =  False/g" /opt/HBmonitor2/config.py
 sed -i "s/WEB_SERVER_PORT =.*/WEB_SERVER_PORT = 80/g" /opt/HBmonitor2/config.py
