@@ -61,13 +61,9 @@ sudo systemctl stop hblink.service
 sudo systemctl disable hblink.service ;;
 7)
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
-cronedit.sh '*/5 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/graph.sh' add &&
-cronedit.sh '*/2 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/cpu.sh' add &&
-cronedit.sh '*/5 * * * *' 'sh /etc/freedmr/hbmon/sysinfo/graph.sh' remove &&
-cronedit.sh '*/2 * * * *' 'sh /etc/freedmr/hbmon/sysinfo/cpu.sh' remove &&
-cronedit.sh '* */24 * * *' 'rm /etc/freedmr/hbmon/data/*' remove &&
-cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor/data/*' add &&
-cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor2/data/*' remove
+rm /opt/HBmonitor/*.json
+(crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/graph.sh") | crontab -
+(crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/cpu.sh") | crontab -
 
 if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
 then sudo systemctl disable hbmon2.service
@@ -91,6 +87,7 @@ sudo systemctl start hbmon.service ;;
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 (crontab -l; echo "*/5 * * * * sh /opt/HBmonitor2/sysinfo/graph.sh")|awk '!x[$0]++'|crontab -
 (crontab -l; echo "*/2 * * * * sh /opt/HBmonitor2/sysinfo/cpu.sh")|awk '!x[$0]++'|crontab -
+rm /opt/HBmonitor2/*.json
 sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
 sh /opt/HBmonitor2/sysinfo/graph.sh
 sleep 1

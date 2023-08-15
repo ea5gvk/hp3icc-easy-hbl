@@ -134,7 +134,7 @@ if ! grep -q 'TGID_URL' /opt/HBmonitor/monitor.py; then
     sed "848 a \    result = try_download(PATH, TGID_FILE, TGID_URL, (FILE_RELOAD * 86400))" -i /opt/HBmonitor/monitor.py
     sed "848 a \   " -i /opt/HBmonitor/monitor.py
 fi
-
+sudo sed -i "s/REPORT_NAME     =.*/REPORT_NAME     = 'Dashboard HBLink of local DMR network'/g" /opt/HBmonitor/config.py
 sudo cat > /lib/systemd/system/hbmon.service <<- "EOF"
 [Unit]
 Description=HBMonitor
