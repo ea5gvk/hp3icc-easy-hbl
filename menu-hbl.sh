@@ -86,8 +86,7 @@ if systemctl status hbmon.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hbmon.service
 
 fi
-sudo systemctl start hbmon.service
-sudo systemctl start http.server-fdmr.service ;;
+sudo systemctl start hbmon.service ;;
 8)
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 cronedit.sh '*/5 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/graph.sh' remove &&
@@ -116,8 +115,7 @@ if systemctl status hbmon2.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hbmon2.service
 
 fi
-sudo systemctl start hbmon2.service
-sudo systemctl start http.server-fdmr2.service ;;
+sudo systemctl start hbmon2.service ;;
 9)
 cronedit.sh '*/5 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/graph.sh' remove
 cronedit.sh '*/2 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/cpu.sh' remove
