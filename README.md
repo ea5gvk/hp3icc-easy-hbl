@@ -1,92 +1,119 @@
-# Easy-HBL
+# Easy-FreeDMR-Docker  
+
+<img src="https://raw.githubusercontent.com/hp3icc/Easy-FreeDMR-Docker/main/Easy-FreeDMR-Docker.png" width="550" height="450"><img src="https://raw.githubusercontent.com/CS8ABG/FDMR-Monitor/main/screenshot.png" width="550" height="450">
+
+Is an excerpt from the emq-TE1ws proyect, focused on new and current sysops who want to install FreeDMR Docker Version easily, quickly and up-to-date.
+
+This shell, install FreeDMR Server,with 2 option Dashboard for select: FDMR-Monitor by OA4DOA Christian and FDMR-Monitor by CS8ABG Bruno , Both Dashboard version Self-Service
+
+FreeDMR Server Self-Service version Docker by CA5RPY Rodrigo, with Dashboard,last original version gitlab FreeDMR by G7RZU hacknix Simon, template mods by WP3JM James & N6DOZ Rudy, Self-Service mods with Dial-TG by IU2NAF Diego .
+
+#
+# Important note : 
+
+* Compatibility
+
+You can use this script on raspberry arm64 , linux pc , server , virtual machine or vps with debian 11 x86 or x64
+
+This script contains binaries created by different developers , many designed to be used on debian 11 or higher , bad news for ubuntu users , some of the included applications may only work correctly on debian 11
+
+* Support
+
+Unofficial script to install Freedmr Server with Dashboard self-service, if you require support from the official version of the developer , refer to the original developer script :
+
+https://gitlab.hacknix.net/hacknix/FreeDMR/-/wikis/Installing-using-Docker-(recommended!)
+
+FreeDMR Server original version gitlab FreeDMR by G7RZU hacknix Simon.
+
+#
+
+# Pre-Requirements
+
+need have curl and sudo installed
+
+#
+
+# Install
+
+* into your ssh terminal copy and paste the following link :
+
+    apt-get update
+    
+    apt-get install curl sudo -y
+
+    bash -c "$(curl -fsSL https://gitlab.com/hp3icc/easy-hbl/-/raw/main/install.sh)"
+               
+#
+
+* If you want to use Easy HBLink+ on your Raspberry B3+ or PI4, you can download the pre-installed image at the following link: 
+
+  <p><a href="https://drive.google.com/u/0/uc?id=1ko4uDqZXd173HYbeEFvCwqFXOjkK4n7e&export=download&confirm=t&uuid=1ko4uDqZXd173HYbeEFvCwqFXOjkK4n7e" target="_blank">Download</a> Raspberry ARM64 image&nbsp;</p>
+
+  User : pi
+
+  Password : Panama507
 
 
+ #            
+  
+ # Menu
+ 
+ ![alt text](https://raw.githubusercontent.com/hp3icc/Easy-FreeDMR-Docker/main/menu.png)
+ 
+  At the end of the installation your freedmr server will be installed and working, a menu will be displayed that will make it easier for you to edit, restart or update your server and dashboard to future versions.
+  
+  to use the options menu, just type menu-fdmr2 in your ssh terminal or console.
+  
+ #
+ 
+ # Location files config
+ 
+  * Docker compose YML File:
+ 
+  /etc/freedmr/docker-compose.yml
+  
+  * FreeDMR Server:  
+   
+  /etc/freedmr/freedmr.cfg  
+   
+  * FreeDMR Rules: 
+   
+  /etc/freedmr/rules.py  
+   
+  * FDMR-Monitor: 
+   
+   /etc/freedmr/hbmon/fdmr-mon.cfg
+   
+   
+ #
+  
+ # Location Dashboard Files
+ 
+ /etc/freedmr/hbmon/html/
 
-## Getting started
+ # Location Dashboard image logo
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+ /etc/freedmr/hbmon/html/img/logo.png
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
 
-## Add your files
+#
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+# Credits :
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/hp3icc/easy-hbl.git
-git branch -M main
-git push -uf origin main
-```
+Special thanks to colleagues: N0MJS Cortney T. Buffington , IU7IGU Daniele Marra , SP2ONG WALDEMAR OGONOWSKI , for their contributions to the content of this scrip.
 
-## Integrate with your tools
+#
 
-- [ ] [Set up project integrations](https://gitlab.com/hp3icc/easy-hbl/-/settings/integrations)
+ # Sources :
+ 
+ * https://gitlab.hacknix.net/hacknix/FreeDMR
+ 
+ * https://github.com/sp2ong/
+ 
+ * https://github.com/yuvelq/FDMR-Monitor/tree/Self_Service
 
-## Collaborate with your team
+ * https://github.com/CS8ABG/FDMR-Monitor/tree/Self_Service
+  
+ 
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
 
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
