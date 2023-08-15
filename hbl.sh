@@ -172,7 +172,80 @@ cp /opt/HBmonitor2/config_SAMPLE.py /opt/HBmonitor2/config.py
 #cp /opt/HBmonitor/utils/hbmon.service /lib/systemd/system/
 cp /opt/HBmonitor2/index_template.html /opt/HBmonitor2/index.html
 #nano /opt/HBmonitor/config.py
-cat > /opt/HBmonitor2/templates/main_table.html  <<- "EOF"
+cat > /opt/HBmonitor2/templates/buttons.html  <<- "EOFX"
+<div style="width: 1100px;">
+<!-- HBMonitor buttons HTML code -->
+<a href="/"><button class="button link">&nbsp;Home&nbsp;</button></a>
+{% if auth == True %}
+&nbsp;
+<div class="dropdown">
+  <button class="dropbtn">&nbsp;Admin Area&nbsp;</button>
+  <div class="dropdown-content">
+    <a href="/masters">&nbsp;Masters&nbsp;</a>
+    <a href="/peers">&nbsp;Peers&nbsp;</a>
+    <a href="/opb">&nbsp;OpenBridge&nbsp;</a>
+ {% if dbridges == True %}
+    <a href="/bridges">&nbsp;Bridges&nbsp;</a>
+ {% endif %}
+    <a href="/moni">&nbsp;Monitor&nbsp;</a>
+    <a href="/sinfo">&nbsp;System Info&nbsp;</a>
+  </div>
+</div>
+{% else %}
+&nbsp;
+<a href="/masters"><button class="button link">&nbsp;Masters & Peers&nbsp;</button></a>
+&nbsp;
+<!--
+<a href="/peers"><button class="button link">&nbsp;Peers&nbsp;</button></a>
+&nbsp;
+-->
+<a href="/opb"><button class="button link">&nbsp;OpenBridge&nbsp;</button></a>
+{% if dbridges == True %}
+&nbsp;
+<a href="/bridges"><button class="button link">&nbsp;Bridges&nbsp;</button></a>
+ {% endif %}
+&nbsp;
+<a href="/moni"><button class="button link">&nbsp;Monitor&nbsp;</button></a>
+&nbsp;
+<a href="/sinfo"><button class="button link">&nbsp;System Info&nbsp;</button></a>
+&nbsp;
+<!--
+{% endif %}
+<a href="/info"><button class="button link">&nbsp;Info&nbsp;</button></a>
+&nbsp;
+-->
+<!-- Own buttons HTML code -->
+<!-- link to long lastheard
+<a target='_blank' href="http://192.168.1.1/log.php"><button class="button link">&nbsp;Lastheard&nbsp;</button></a>
+&nbsp;
+
+-->
+
+<!-- Example of buttons dropdown HTML code -->
+<!--
+<p></p>
+<div class="dropdown">
+  <button class="dropbtn">Admin Area</button>
+  <div class="dropdown-content">
+    <a href="/masters">Master&Peer</a>
+    <a href="/opb">OpenBridge</a>
+    <a href="/moni">Monitor</a>
+  </div>
+</div>
+&nbsp;
+<div class="dropdown">
+  <button class="dropbtn">Reflectors</button>
+  <div class="dropdown-content">
+    <a target='_blank' href="#">YSF Reflector</a>
+    <a target='_blank' href="#">XLX950</a>
+  </div>
+</div>
+-->
+</div>
+<p></p>
+
+EOFX
+cat > /opt/HBmonitor2/templates/main_table.html  <<- "EOFT"
 {% include 'buttons.html' ignore missing %}
 <fieldset style="background-color:#f0f0f0f0;margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
 <legend><b><font color="#000">&nbsp;.: DMR Server activity :.&nbsp;</font></b></legend>
@@ -310,8 +383,8 @@ cat > /opt/HBmonitor2/templates/main_table.html  <<- "EOF"
 </fieldset>
 
 
-EOF
-cat > /opt/HBmonitor2/templates/masters_table.html  <<- "EOF"
+EOFT
+cat > /opt/HBmonitor2/templates/masters_table.html  <<- "EOFD"
 {% include 'buttons.html' ignore missing %}
 <fieldset style="background-color:#e0e0e0e0; margin-left:15px;margin-right:15px;font-size:14px;border-top-left-radius: 10px; border-top-right-radius: 10px;border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
 <legend><b><font color="#000">&nbsp;.: Masters status :.&nbsp;</font></b></legend>
@@ -409,80 +482,8 @@ cat > /opt/HBmonitor2/templates/masters_table.html  <<- "EOF"
 </fieldset>
 
 
-EOF
-sudo cat > /opt/HBmonitor2/templates/buttons.php <<- "EOF"
-<div style="width: 1100px;">
-<!-- HBMonitor buttons HTML code -->
-<a href="/"><button class="button link">&nbsp;Home&nbsp;</button></a>
-{% if auth == True %}
-&nbsp;
-<div class="dropdown">
-  <button class="dropbtn">&nbsp;Admin Area&nbsp;</button>
-  <div class="dropdown-content">
-    <a href="/masters">&nbsp;Masters&nbsp;</a>
-    <a href="/peers">&nbsp;Peers&nbsp;</a>
-    <a href="/opb">&nbsp;OpenBridge&nbsp;</a>
- {% if dbridges == True %}
-    <a href="/bridges">&nbsp;Bridges&nbsp;</a>
- {% endif %}
-    <a href="/moni">&nbsp;Monitor&nbsp;</a>
-    <a href="/sinfo">&nbsp;System Info&nbsp;</a>
-  </div>
-</div>
-{% else %}
-&nbsp;
-<a href="/masters"><button class="button link">&nbsp;Masters & Peers&nbsp;</button></a>
-&nbsp;
-<!--
-<a href="/peers"><button class="button link">&nbsp;Peers&nbsp;</button></a>
-&nbsp;
--->
-<a href="/opb"><button class="button link">&nbsp;OpenBridge&nbsp;</button></a>
-{% if dbridges == True %}
-&nbsp;
-<a href="/bridges"><button class="button link">&nbsp;Bridges&nbsp;</button></a>
- {% endif %}
-&nbsp;
-<a href="/moni"><button class="button link">&nbsp;Monitor&nbsp;</button></a>
-&nbsp;
-<a href="/sinfo"><button class="button link">&nbsp;System Info&nbsp;</button></a>
-&nbsp;
-<!--
-{% endif %}
-<a href="/info"><button class="button link">&nbsp;Info&nbsp;</button></a>
-&nbsp;
-<!-- Own buttons HTML code -->
-<!-- link to long lastheard
-<a target='_blank' href="http://192.168.1.1/log.php"><button class="button link">&nbsp;Lastheard&nbsp;</button></a>
-&nbsp;
+EOFD
 
--->
-
-<!-- Example of buttons dropdown HTML code -->
-<!--
-<p></p>
-<div class="dropdown">
-  <button class="dropbtn">Admin Area</button>
-  <div class="dropdown-content">
-    <a href="/masters">Master&Peer</a>
-    <a href="/opb">OpenBridge</a>
-    <a href="/moni">Monitor</a>
-  </div>
-</div>
-&nbsp;
-<div class="dropdown">
-  <button class="dropbtn">Reflectors</button>
-  <div class="dropdown-content">
-    <a target='_blank' href="#">YSF Reflector</a>
-    <a target='_blank' href="#">XLX950</a>
-  </div>
-</div>
--->
-</div>
-<p></p>
-
-
-EOF
 sed -i 's/localhost_2-day.png/localhost_1-day.png/' /opt/HBmonitor2/templates/sysinfo_template.html
 sed '39 a <!--' -i /opt/HBmonitor2/templates/sysinfo_template.html
 sed '43 a -->' -i /opt/HBmonitor2/templates/sysinfo_template.html
