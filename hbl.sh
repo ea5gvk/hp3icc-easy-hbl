@@ -484,6 +484,8 @@ sed -i 's/localhost_2-day.png/localhost_1-day.png/' /opt/HBmonitor2/templates/sy
 sed '39 a <!--' -i /opt/HBmonitor2/templates/sysinfo_template.html
 sed '43 a -->' -i /opt/HBmonitor2/templates/sysinfo_template.html
 sed -i "s/<br><br>.*/ Proyect : <a href=\"https:\/\/gitlab.com\/hp3icc\/Easy-HBL\/\" target=\"_blank\">Easy-HBL+<\/a><br\/><br\/><\/span>/g" /opt/HBmonitor2/templates/*.html
+sed -i 's/b1eee9/3bb43d/' /opt/HBmonitor2/templates/moni_template.html
+
 
 apps=("rrdtool")
 
@@ -505,7 +507,7 @@ sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
 sh /opt/HBmonitor2/sysinfo/graph.sh
 sh /opt/HBmonitor2/sysinfo/cpu.sh
 
-
+sudo sed -i "s/REPORT_NAME     =.*/REPORT_NAME     = 'Dashboard HBLink of local DMR network'/g" /opt/HBmonitor2/config.py
 sed -i "s/WEB_AUTH =.*/WEB_AUTH =  False/g" /opt/HBmonitor2/config.py
 sed -i "s/WEB_SERVER_PORT =.*/WEB_SERVER_PORT = 80/g" /opt/HBmonitor2/config.py
 sed -i "s/FILE_RELOAD     =.*/FILE_RELOAD     = 1/g" /opt/HBmonitor2/config.py
