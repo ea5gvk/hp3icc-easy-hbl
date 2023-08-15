@@ -40,29 +40,25 @@ if systemctl status hblparrot.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hblparrot.service
 
 fi
-if systemctl status proxy.service |grep active >/dev/null 2>&1
-then sudo systemctl stop proxy.service
-
-fi
-if systemctl status freedmr.service |grep active >/dev/null 2>&1
-then sudo systemctl stop freedmr.service
+if systemctl status hblink.service |grep active >/dev/null 2>&1
+then sudo systemctl stop hblink.service
 
 fi
 if systemctl status hblparrot.service |grep disable >/dev/null 2>&1
 then sudo systemctl enable hblparrot.service
 
 fi
-if systemctl status freedmr.service |grep disable >/dev/null 2>&1
-then sudo systemctl enable freedmr.service
+if systemctl status hblink.service |grep disable >/dev/null 2>&1
+then sudo systemctl enable hblink.service
 
 fi
-sudo systemctl start freedmr.service
+sudo systemctl start hblink.service
 sudo systemctl start hblparrot.service ;;
 7)
 sudo systemctl stop hblparrot.service
 sudo systemctl disable hblparrot.service
-sudo systemctl stop freedmr.service
-sudo systemctl disable freedmr.service ;;
+sudo systemctl stop hblink.service
+sudo systemctl disable hblink.service ;;
 8)
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 cronedit.sh '*/5 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/graph.sh' add &&
@@ -73,43 +69,24 @@ cronedit.sh '* */24 * * *' 'rm /etc/freedmr/hbmon/data/*' remove &&
 cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor/data/*' add &&
 cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor2/data/*' remove
 
-if systemctl status http.server-fdmr2.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable http.server-fdmr2.service
+if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl disable hbmon2.service
 
 fi
-if ! systemctl status http.server-fdmr.service | grep "service; enabled;" >/dev/null 2>&1; then
-   sudo systemctl enable http.server-fdmr.service
+if ! systemctl status hbmon.service | grep "service; enabled;" >/dev/null 2>&1; then
+    sudo systemctl enable hbmon.service
+fi
 
-fi
-if systemctl status fdmr_mon2.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable fdmr_mon2.service
-
-fi
-if ! systemctl status fdmr_mon.service | grep "service; enabled;" >/dev/null 2>&1; then
-    sudo systemctl enable fdmr_mon.service
-fi
-if ! systemctl status proxy.service | grep "service; enabled;" >/dev/null 2>&1; then
-   sudo systemctl enable proxy.service
-
-fi
 #####################################
-if sudo systemctl status http.server-fdmr.service |grep active >/dev/null 2>&1
-then 
-   sudo systemctl stop http.server-fdmr.service
-fi &&
-if sudo systemctl status http.server-fdmr2.service |grep active >/dev/null 2>&1
-then 
-   sudo systemctl stop http.server-fdmr2.service
-fi
-if systemctl status fdmr_mon2.service |grep active >/dev/null 2>&1
-then sudo systemctl stop fdmr_mon2.service
+if systemctl status hbmon2.service |grep active >/dev/null 2>&1
+then sudo systemctl stop hbmon2.service
 
 fi
-if systemctl status fdmr_mon.service |grep active >/dev/null 2>&1
-then sudo systemctl stop fdmr_mon.service
+if systemctl status hbmon.service |grep active >/dev/null 2>&1
+then sudo systemctl stop hbmon.service
 
 fi
-sudo systemctl start fdmr_mon.service
+sudo systemctl start hbmon.service
 sudo systemctl start http.server-fdmr.service ;;
 9)
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
@@ -120,66 +97,37 @@ cronedit.sh '*/2 * * * *' 'sh /etc/freedmr/hbmon/sysinfo/cpu.sh' remove &&
 cronedit.sh '* */24 * * *' 'rm /etc/freedmr/hbmon/data/*' remove &&
 cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor/data/*' remove &&
 cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor2/data/*' add
-if systemctl status mariadb.service |grep inactive >/dev/null 2>&1
-then sudo systemctl start mariadb.service
+
+if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl disable hbmon.service
 
 fi
-if systemctl status mariadb.service |grep disable >/dev/null 2>&1
-then sudo systemctl enable mariadb.service
+if ! systemctl status hbmon2.service | grep "service; enabled;" >/dev/null 2>&1; then
+    sudo systemctl enable hbmon2.service
+fi
 
-fi
-if systemctl status http.server-fdmr.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable http.server-fdmr.service
-
-fi
-if ! systemctl status http.server-fdmr2.service | grep "service; enabled;" >/dev/null 2>&1; then
-   sudo systemctl enable http.server-fdmr2.service
-
-fi
-if systemctl status fdmr_mon.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable fdmr_mon.service
-
-fi
-if ! systemctl status fdmr_mon2.service | grep "service; enabled;" >/dev/null 2>&1; then
-    sudo systemctl enable fdmr_mon2.service
-fi
-if ! systemctl status proxy.service | grep "service; enabled;" >/dev/null 2>&1; then
-   sudo systemctl enable proxy.service
-
-fi
 #####################################
-if sudo systemctl status http.server-fdmr.service |grep active >/dev/null 2>&1
-then 
-   sudo systemctl stop http.server-fdmr.service
-fi &&
-if sudo systemctl status http.server-fdmr2.service |grep active >/dev/null 2>&1
-then 
-   sudo systemctl stop http.server-fdmr2.service
-fi 
-if systemctl status fdmr_mon.service |grep active >/dev/null 2>&1
-then sudo systemctl stop fdmr_mon.service
+
+if systemctl status hbmon.service |grep active >/dev/null 2>&1
+then sudo systemctl stop hbmon.service
 
 fi
-if systemctl status fdmr_mon2.service |grep active >/dev/null 2>&1
-then sudo systemctl stop fdmr_mon2.service
+if systemctl status hbmon2.service |grep active >/dev/null 2>&1
+then sudo systemctl stop hbmon2.service
 
 fi
-sudo systemctl start fdmr_mon2.service
+sudo systemctl start hbmon2.service
 sudo systemctl start http.server-fdmr2.service ;;
 10)
 cronedit.sh '*/5 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/graph.sh' remove
 cronedit.sh '*/2 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/cpu.sh' remove
 cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor/data/*' remove
 cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor2/data/*' remove
-sudo systemctl stop fdmr_mon2.service
-sudo systemctl disable fdmr_mon2.service
-sudo systemctl stop http.server-fdmr2.service
-sudo systemctl disable http.server-fdmr2.service
-sudo systemctl stop fdmr_mon.service
-sudo systemctl disable fdmr_mon.service
-sudo systemctl stop http.server-fdmr.service
-sudo systemctl disable http.server-fdmr.service
-;; 
+sudo systemctl stop hbmon2.service
+sudo systemctl disable hbmon2.service
+sudo systemctl stop hbmon.service
+sudo systemctl disable hbmon.service
+; 
 12)
 bash -c "$(curl -fsSL https://gitlab.com/hp3icc/fdmr/-/raw/main/update.sh)";
 esac
