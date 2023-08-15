@@ -93,6 +93,7 @@ sudo systemctl start hbmon.service ;;
 (crontab -l; echo "*/2 * * * * sh /opt/HBmonitor2/sysinfo/cpu.sh")|awk '!x[$0]++'|crontab -
 sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
 sh /opt/HBmonitor2/sysinfo/graph.sh
+sleep 1
 sh /opt/HBmonitor2/sysinfo/cpu.sh
 
 if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
