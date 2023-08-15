@@ -62,6 +62,7 @@ sudo systemctl disable hblink.service ;;
 7)
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 rm /opt/HBmonitor/*.json
+rm /opt/HBmonitor/log/*
 (crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/graph.sh") | crontab -
 (crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/cpu.sh") | crontab -
 
@@ -88,6 +89,7 @@ sudo systemctl start hbmon.service ;;
 (crontab -l; echo "*/5 * * * * sh /opt/HBmonitor2/sysinfo/graph.sh")|awk '!x[$0]++'|crontab -
 (crontab -l; echo "*/2 * * * * sh /opt/HBmonitor2/sysinfo/cpu.sh")|awk '!x[$0]++'|crontab -
 rm /opt/HBmonitor2/*.json
+rm /opt/HBmonitor2/log/*
 sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
 sh /opt/HBmonitor2/sysinfo/graph.sh
 sleep 1

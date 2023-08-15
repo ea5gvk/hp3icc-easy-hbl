@@ -117,8 +117,11 @@ cp /opt/HBmonitor/index_template.html /opt/HBmonitor/index.html
 sed -i "s/<br><br>.*/ Proyect : <a href=\"https:\/\/gitlab.com\/hp3icc\/Easy-HBL\/\" target=\"_blank\">Easy-HBL+<\/a><br\/><br\/><\/span>/g" /opt/HBmonitor/*.html
 #sed -i "s/<img src=.*/<img src=\"data:image\/HBlink.png\"\/>/g" /opt/HBmonitor/*.html
 <img src=
+sed -i "s/9000/9100/g" /opt/HBmonitor/monitor.py
+sed -i "s/9000/9100/g" /opt/HBmonitor/*.html
 sed -i "s/WEB_AUTH =.*/WEB_AUTH =  False/g" /opt/HBmonitor/config.py
 sed -i "s/WEB_SERVER_PORT =.*/WEB_SERVER_PORT = 80/g" /opt/HBmonitor/config.py
+sed -i "s/HBLINK_PORT     =.*/HBLINK_PORT     = 4322/g" /opt/HBmonitor/config.py
 sed -i "s/FILE_RELOAD     =.*/FILE_RELOAD     = 1/g" /opt/HBmonitor/config.py
 sed -i "s/SUBSCRIBER_URL  =.*/SUBSCRIBER_URL  = 'http:\/\/datafiles.ddns.net:8888\/user.json'/g" /opt/HBmonitor/config.py
 #wget http://downloads.freedmr.uk/downloads/talkgroup_ids.json -O /opt/HBmonitor/talkgroup_ids.json
@@ -507,9 +510,12 @@ sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
 sh /opt/HBmonitor2/sysinfo/graph.sh
 sh /opt/HBmonitor2/sysinfo/cpu.sh
 
-sudo sed -i "s/REPORT_NAME     =.*/REPORT_NAME     = 'Dashboard HBLink of local DMR network'/g" /opt/HBmonitor2/config.py
+sed -i "s/9000/9100/g" /opt/HBmonitor2/monitor.py
+sed -i "s/9000/9100/g" /opt/HBmonitor2/scripts/hbmon.js
+sed -i "s/REPORT_NAME     =.*/REPORT_NAME     = 'Dashboard HBLink of local DMR network'/g" /opt/HBmonitor2/config.py
 sed -i "s/WEB_AUTH =.*/WEB_AUTH =  False/g" /opt/HBmonitor2/config.py
 sed -i "s/WEB_SERVER_PORT =.*/WEB_SERVER_PORT = 80/g" /opt/HBmonitor2/config.py
+sed -i "s/HBLINK_PORT     =.*/HBLINK_PORT     = 4322/g" /opt/HBmonitor2/config.py
 sed -i "s/FILE_RELOAD     =.*/FILE_RELOAD     = 1/g" /opt/HBmonitor2/config.py
 sed -i "s/SUBSCRIBER_URL  =.*/SUBSCRIBER_URL  = 'http:\/\/datafiles.ddns.net:8888\/user.json'/g" /opt/HBmonitor2/config.py
 #wget http://downloads.freedmr.uk/downloads/talkgroup_ids.json -O /opt/HBmonitor/talkgroup_ids.json
@@ -641,7 +647,7 @@ MESSAGE:Connesso ad HBLINK
 [REPORTS]
 REPORT: True
 REPORT_INTERVAL: 1
-REPORT_PORT: 4321
+REPORT_PORT: 4322
 REPORT_CLIENTS: 127.0.0.1
 
 
