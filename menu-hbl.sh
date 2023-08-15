@@ -35,7 +35,7 @@ sudo nano /opt/HBlink3/rules.py ;;
 sudo nano /opt/HBmonitor/config.py ;;
 4)
 sudo nano /opt/HBmonitor2/config.py ;;
-6)
+5)
 if systemctl status hblparrot.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hblparrot.service
 
@@ -54,12 +54,12 @@ then sudo systemctl enable hblink.service
 fi
 sudo systemctl start hblink.service
 sudo systemctl start hblparrot.service ;;
-7)
+6)
 sudo systemctl stop hblparrot.service
 sudo systemctl disable hblparrot.service
 sudo systemctl stop hblink.service
 sudo systemctl disable hblink.service ;;
-8)
+7)
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 cronedit.sh '*/5 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/graph.sh' add &&
 cronedit.sh '*/2 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/cpu.sh' add &&
@@ -88,7 +88,7 @@ then sudo systemctl stop hbmon.service
 fi
 sudo systemctl start hbmon.service
 sudo systemctl start http.server-fdmr.service ;;
-9)
+8)
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 cronedit.sh '*/5 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/graph.sh' remove &&
 cronedit.sh '*/2 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/cpu.sh' remove &&
@@ -118,7 +118,7 @@ then sudo systemctl stop hbmon2.service
 fi
 sudo systemctl start hbmon2.service
 sudo systemctl start http.server-fdmr2.service ;;
-10)
+9)
 cronedit.sh '*/5 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/graph.sh' remove
 cronedit.sh '*/2 * * * *' 'sh /opt/FDMR-Monitor/sysinfo/cpu.sh' remove
 cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor/data/*' remove
@@ -126,9 +126,8 @@ cronedit.sh '* */24 * * *' 'rm /opt/FDMR-Monitor2/data/*' remove
 sudo systemctl stop hbmon2.service
 sudo systemctl disable hbmon2.service
 sudo systemctl stop hbmon.service
-sudo systemctl disable hbmon.service
-; 
-12)
+sudo systemctl disable hbmon.service ;; 
+10)
 bash -c "$(curl -fsSL https://gitlab.com/hp3icc/fdmr/-/raw/main/update.sh)";
 esac
 done
