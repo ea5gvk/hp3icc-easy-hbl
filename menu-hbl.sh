@@ -13,11 +13,10 @@ choix=$(whiptail --title "Raspbian Proyect HP3ICC HBL+" --menu "move up or down 
 4 " Edit HBMon 2 " \
 5 " Start-Restart HBLink Server  " \
 6 " Stop HBLink SERVER " \
-7 " Select Dashboard HBMonitor" \
-8 " Select Dashboard HBMonitor 2" \
-9 " Select Dashboard HBJson" \
-10 " Stop Dashboard " \
-11 " Menu update " 3>&1 1>&2 2>&3)
+7 " Select Dashboard HBMon-1" \
+8 " Select Dashboard HBMon-2" \
+9 " Stop Dashboard " \
+10 " Menu update " 3>&1 1>&2 2>&3)
 exitstatus=$?
 #on recupere ce choix
 #exitstatus=$?
@@ -79,10 +78,6 @@ if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
 then sudo systemctl disable hbmon2.service
 
 fi
-if systemctl status hbmon-js.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable hbmon-js.service
-
-fi
 if ! systemctl status hbmon.service | grep "service; enabled;" >/dev/null 2>&1; then
     sudo systemctl enable hbmon.service
 fi
@@ -94,10 +89,6 @@ then sudo systemctl stop hbmon2.service
 fi
 if systemctl status hbmon.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hbmon.service
-
-fi
-if systemctl status hbmon-js.service |grep active >/dev/null 2>&1
-then sudo systemctl stop hbmon-js.service
 
 fi
 sudo systemctl start hbmon.service ;;
@@ -116,10 +107,6 @@ if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
 then sudo systemctl disable hbmon.service
 
 fi
-if systemctl status hbmon-js.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable hbmon-js.service
-
-fi
 if ! systemctl status hbmon2.service | grep "service; enabled;" >/dev/null 2>&1; then
     sudo systemctl enable hbmon2.service
 fi
@@ -134,15 +121,8 @@ if systemctl status hbmon2.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hbmon2.service
 
 fi
-if systemctl status hbmon-js.service |grep active >/dev/null 2>&1
-then sudo systemctl stop hbmon-js.service
-
-fi
 sudo systemctl start hbmon2.service ;;
 9)
-(crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
-rm /opt/HBJson/*.json
-rm /opt/HBJson/log/*
 (crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/graph.sh") | crontab -
 (crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/cpu.sh") | crontab -
 
@@ -154,11 +134,7 @@ if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
 then sudo systemctl disable hbmon.service
 
 fi
-if ! systemctl status hbmon-js.service | grep "service; enabled;" >/dev/null 2>&1; then
-    sudo systemctl enable hbmon-js.service
-fi
-
-#####################################
+###############
 if systemctl status hbmon2.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hbmon2.service
 
@@ -166,41 +142,8 @@ fi
 if systemctl status hbmon.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hbmon.service
 
-fi
-if systemctl status hbmon-js.service |grep active >/dev/null 2>&1
-then sudo systemctl stop hbmon-js.service
-
-fi
-sudo systemctl start hbmon-js.service ;;
+fi ;; 
 10)
-(crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/graph.sh") | crontab -
-(crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/cpu.sh") | crontab -
-
-if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable hbmon2.service
-
-fi
-if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable hbmon.service
-
-fi
-if systemctl status hbmon-js.service |grep "service; enabled;" >/dev/null 2>&1
-then sudo systemctl disable hbmon-js.service
-
-fi
-if systemctl status hbmon2.service |grep active >/dev/null 2>&1
-then sudo systemctl stop hbmon2.service
-
-fi
-if systemctl status hbmon.service |grep active >/dev/null 2>&1
-then sudo systemctl stop hbmon.service
-
-fi
-if systemctl status hbmon-js.service |grep active >/dev/null 2>&1
-then sudo systemctl stop hbmon-js.service
-
-fi;; 
-11)
 bash -c "$(curl -fsSL https://gitlab.com/hp3icc/easy-hbl/-/raw/main/update.sh)";
 esac
 done
