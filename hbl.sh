@@ -32,6 +32,14 @@ cd /opt/
 #wget https://bootstrap.pypa.io/get-pip.py
 #python3 get-pip.py
 #############
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rustup.sh
+chmod +x rustup.sh
+./rustup.sh -y
+source "$HOME/.cargo/env"
+rustup update
+rustup update stable
+
+#############
 apt-get install python3-venv -y
 python3 -m venv env0
 source env0/bin/activate
