@@ -22,16 +22,15 @@ need have curl and sudo installed
 #
 
 # Install
-
 * into your ssh terminal copy and paste the following link :
 
-    apt-get update
+      apt-get update
     
-    apt-get install curl sudo -y
+      apt-get install curl sudo -y
 
-    sudo su
+      sudo su
 
-    bash -c "$(curl -fsSL https://gitlab.com/hp3icc/easy-hbl/-/raw/main/install.sh)"
+      bash -c "$(curl -fsSL https://gitlab.com/hp3icc/easy-hbl/-/raw/main/install.sh)"
                
  #            
   
