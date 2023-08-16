@@ -35,8 +35,18 @@ cd /opt/
 apt-get install python3-venv -y
 python3 -m venv env0
 source env0/bin/activate
-pip3 install --upgrade pip
-pip install pyopenssl --upgrade
+python3 -m pip install --upgrade pip setuptools
+python3 -m pip install --upgrade cryptography pyopenssl
+python3 -m pip install --upgrade Twisted
+python3 -m pip install --upgrade dmr_utils3
+python3 -m pip install --upgrade bitstring
+python3 -m pip install --upgrade autobahn
+python3 -m pip install --upgrade jinja2==2.11.3
+python3 -m pip install --upgrade markupsafe==2.0.1
+python3 -m pip install --upgrade bitarray>=0.8.1
+python3 -m pip install --upgrade configparser>=3.0.0
+python3 -m pip install --upgrade aprslib>=0.6.42
+python3 -m pip install --upgrade attrs
 deactivate
 
 ##################
@@ -95,7 +105,7 @@ cd /opt/
 git clone https://github.com/iu7igu/hblink3-aprs.git /opt/HBlink3
 cd /opt/HBlink3
 sudo git checkout private-call
-sudo pip install -U -r requirements.txt
+#sudo pip install -U -r requirements.txt
 #chmod +x install.sh
 
 #./install.sh
@@ -105,8 +115,9 @@ cd /opt/
 git clone https://github.com/sp2ong/HBmonitor.git /opt/HBmonitor
 cd /opt/HBmonitor/
 #sudo git checkout webserver-python
-chmod +x install.sh
-./install.sh
+#chmod +x install.sh
+#./install.sh
+
 rm /opt/HBmonitor/log/*
 rm /opt/HBmonitor/*.json
 cp /opt/HBmonitor/config_SAMPLE.py /opt/HBmonitor/config.py
@@ -163,8 +174,8 @@ cd /opt/
 git clone https://github.com/sp2ong/HBMonv2.git /opt/HBmonitor2
 cd /opt/HBmonitor2/
 sudo git checkout webserver-python
-chmod +x install.sh
-./install.sh
+#chmod +x install.sh
+#./install.sh
 #mv /opt/backup/dmr_utils3/ /opt/
 rm /opt/HBmonitor2/log/*
 rm /opt/HBmonitor2/*.json
@@ -557,15 +568,15 @@ sed '5 a <link rel="shortcut icon" href="img/favicon.ico" />' -i /opt/HBmonitor2
 wget -q --no-check-certificate -r 'https://docs.google.com/uc?export=download&id=10tTBFDrnd1b8xcTvvB3gxABdjk5LRCFX' -O /opt/HBmonitor2/img/favicon.ico
 
 
-cd /opt/dmr_utils3
+#d /opt/dmr_utils3
 
-chmod +x install.sh
+#chmod +x install.sh
 
-./install.sh
+#./install.sh
 
-/usr/bin/python3 -m pip install --upgrade pip
+#/usr/bin/python3 -m pip install --upgrade pip
 
-pip install --upgrade dmr_utils3
+#sudo pip3 install --upgrade dmr_utils3
 
 cd /opt/HBlink3
 #Install Parrot for Echotest:
