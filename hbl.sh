@@ -86,7 +86,7 @@ fi
 mkdir /var/log/hblink
 mkdir /opt/backup/
 cd /opt/
-git clone r /opt/backup/
+git clone https://github.com/lz5pn/HBlink3.git /opt/backup/
 mv /opt/backup/dmr_utils3/ /opt/
 #mv /opt/HBlink3/ /opt/backup/
 

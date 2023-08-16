@@ -44,13 +44,15 @@ Special thanks to colleagues: N0MJS Cortney T. Buffington , IU7IGU Daniele Marra
 
  # Sources :
  
- * https://gitlab.hacknix.net/hacknix/FreeDMR
- 
- * https://github.com/sp2ong/
- 
- * https://github.com/yuvelq/FDMR-Monitor/tree/Self_Service
+ * https://github.com/HBLink-org/hblink3
 
- * https://github.com/CS8ABG/FDMR-Monitor/tree/Self_Service
+ * https://github.com/lz5pn/HBlink3
+ 
+ * https://github.com/iu7igu/hblink3-aprs
+ 
+ * https://github.com/sp2ong/HBmonitor
+
+ * https://github.com/sp2ong/HBMonv2
   
  
 
