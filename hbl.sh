@@ -1057,6 +1057,11 @@ if ! grep -q 'TGID_URL' /opt/HBJson/monitor.py; then
 fi
 sed -i "s/Téléchargement.*/Please Wait.../g" /opt/HBJson/templates/loglast_template.html
 sed -i "s/liste .*/<\/div>/g" /opt/HBJson/templates/loglast_template.html
+cp /opt/HBJson/images/favicon.ico /opt/HBmonitor2/img/favicon.ico
+cp /opt/HBJson/images/favicon.ico /opt/HBmonitor/images/favicon.ico
+sed '5 a <link rel="shortcut icon" href="img/favicon.ico" />' -i /opt/HBmonitor2/templates/*.html
+#sed '4 a <link rel="shortcut icon" href="images/favicon.ico" />' -i /opt/HBmonitor/index.html
+
 sudo cat > /lib/systemd/system/hbmon-js.service <<- "EOF"
 [Unit]
 Description=HBJson
