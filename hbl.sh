@@ -552,7 +552,7 @@ WantedBy=multi-user.target
 
 EOF
 ##############################
-cp /opt/HBmonitor/images/HBlink.png /opt/HBmonitor2/img/logo.png
+wget -q --no-check-certificate -r 'https://docs.google.com/uc?export=download&id=17SaTJ5PntIAuBjB5tcuDhzUcMWg7syF2' -O /opt/HBmonitor2/img/logo.png
 sed '5 a <link rel="shortcut icon" href="img/favicon.ico" />' -i /opt/HBmonitor2/templates/*.html
 wget -q --no-check-certificate -r 'https://docs.google.com/uc?export=download&id=10tTBFDrnd1b8xcTvvB3gxABdjk5LRCFX' -O /opt/HBmonitor2/img/favicon.ico
 
