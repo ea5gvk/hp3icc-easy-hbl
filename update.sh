@@ -4,6 +4,7 @@ if [[ $EUID -ne 0 ]]; then
 	exit 0
 fi
 
-bash -c "$(curl -fsSL https://gitlab.com/hp3icc/easy-hbl/-/raw/main/menu-hbl.sh)"
-bash -c "$(curl -fsSL https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl.sh)"
+whiptail --title "FDMR+" --msgbox "Muy pronto / Comming soon" 0 50
+#bash -c "$(curl -fsSL https://gitlab.com/hp3icc/easy-hbl/-/raw/main/menu-hbl.sh)"
+#bash -c "$(curl -fsSL https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl.sh)"
 

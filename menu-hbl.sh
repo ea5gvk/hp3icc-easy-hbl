@@ -28,15 +28,35 @@ fi
 # case : action en fonction du choix
 case $choix in
 1)
-sudo nano /opt/HBlink3/hblink.cfg ;;
+sudo nano /opt/HBlink3/hblink.cfg
+if systemctl status hblink.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl restart hblink.service
+  if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
+  then sudo systemctl restart hbmon.service
+    else
+      if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
+      then sudo systemctl restart hbmon2.service
+    fi
+  fi
+fi;;
 2)
-sudo nano /opt/HBlink3/rules.py ;;
+sudo nano /opt/HBlink3/rules.py
+if systemctl status hblink.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl restart hblink.service
+  if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
+  then sudo systemctl restart hbmon.service
+    else
+      if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
+      then sudo systemctl restart hbmon2.service
+    fi
+  fi
+fi ;;
 3)
 sudo nano /opt/HBmonitor/config.py &&
 if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
 then sudo systemctl restart hbmon.service
 
-fi;;
+fi ;;
 4)
 sudo nano /opt/HBmonitor2/config.py &&
 if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
