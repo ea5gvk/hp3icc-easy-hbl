@@ -43,18 +43,19 @@ rustup update stable
 apt-get install python3-venv -y
 python3 -m venv env0
 source env0/bin/activate
-python3 -m pip install --upgrade pip setuptools
-python3 -m pip install --upgrade cryptography pyopenssl
-python3 -m pip install --upgrade Twisted
-python3 -m pip install --upgrade dmr_utils3
-python3 -m pip install --upgrade bitstring
-python3 -m pip install --upgrade autobahn
-python3 -m pip install --upgrade jinja2==2.11.3
-python3 -m pip install --upgrade markupsafe==2.0.1
-python3 -m pip install --upgrade bitarray>=0.8.1
-python3 -m pip install --upgrade configparser>=3.0.0
-python3 -m pip install --upgrade aprslib>=0.6.42
-python3 -m pip install --upgrade attrs
+sudo python3 -m pip install --upgrade pip setuptools
+sudo python3 -m pip install --upgrade cryptography 
+sudo python3 -m pip install --upgrade pyopenssl
+sudo python3 -m pip install --upgrade Twisted
+sudo python3 -m pip install --upgrade dmr_utils3
+sudo python3 -m pip install --upgrade bitstring
+sudo python3 -m pip install --upgrade autobahn
+sudo python3 -m pip install --upgrade jinja2==2.11.3
+sudo python3 -m pip install --upgrade markupsafe==2.0.1
+sudo python3 -m pip install --upgrade bitarray>=0.8.1
+sudo python3 -m pip install --upgrade configparser>=3.0.0
+sudo python3 -m pip install --upgrade aprslib>=0.6.42
+sudo python3 -m pip install --upgrade attrs
 deactivate
 
 ##################
