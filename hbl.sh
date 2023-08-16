@@ -298,11 +298,9 @@ cat > /opt/HBmonitor2/templates/main_table.html  <<- "EOFT"
     </tr>
     {% endif %}
     {% endfor %}
-    <tr style="background-color:#f0f0f0;"><td colspan=3 height=5pt><hr style="height:1px;border:none;color:#f0f0f0;background-color:#f0f0f0;"></hr></td></tr>
-
+      <tr style="background-color:#f9f9f9;" height="2px"><td colspan=3><hr style="padding:0px; margin:0px;border:none;color:#f9f9f9;background-color:#f9f9f9;"></td></tr>
 {% if _table['OPENBRIDGES']|length >0 %}
-    <tr style="background-color:#265b8a;" "height:30px;width:1100px; font: 10pt arial, sans-serif;{{ themec }}">
-        <th>Systems OpenBridge</th>
+    <tr style="height:30px;width:100%; font: 10pt arial, sans-serif;{{ themec }}">        <th>Systems OpenBridge</th>
         <th colspan=2 '>Active Incoming Calls</th>
     </tr>
     {% for _openbridge in _table['OPENBRIDGES'] %}
@@ -554,6 +552,7 @@ WantedBy=multi-user.target
 
 EOF
 ##############################
+cp /opt/HBmonitor/images/HBlink.png /opt/HBmonitor2/img/logo.png
 cd /opt/dmr_utils3
 
 chmod +x install.sh
@@ -1038,8 +1037,26 @@ cd /opt/HBJson
 sudo pip install -U -r requirements.txt
 cp config_SAMPLE.py config.py
 sed -i "s/JSON_SERVER_PORT =.*/JSON_SERVER_PORT = 80/g" /opt/HBJson/config.py
-
-
+sed -i "s/HBLINK_PORT     =.*/HBLINK_PORT     = 4322/g" /opt/HBJson/config.py
+sed -i "s/FILE_RELOAD     =.*/FILE_RELOAD     = 1/g" /opt/HBJson/config.py
+sed -i "s/SUBSCRIBER_URL  =.*/SUBSCRIBER_URL  = 'http:\/\/datafiles.ddns.net:8888\/user.json'/g" /opt/HBJson/config.py
+sed -i "s/LOCAL_SUBSCRIBER_URL  =.*/LOCAL_SUBSCRIBER_URL  = 'local_subscriber_ids.json'/g" /opt/HBJson/config.py
+if [ "$(cat /opt/HBJson/config.py | grep 'TGID_URL')" != "" ]; then
+sed -i "s/TGID_URL.*/TGID_URL        = 'http:\/\/datafiles.ddns.net:8888\/talkgroup_ids.json'/g" /opt/HBJson/config.py
+else
+sed "108 a TGID_URL        = 'http://datafiles.ddns.net:8888/talkgroup_ids.json'" -i /opt/HBJson/config.py 
+fi
+if ! grep -q 'TGID_URL' /opt/HBJson/monitor.py; then
+    sed "1866 a \   " -i /opt/HBJson/monitor.py
+    sed "1866 a \        pass" -i /opt/HBJson/monitor.py
+    sed "1866 a \    except:" -i /opt/HBJson/monitor.py
+    sed "1866 a \        logging.info(result)" -i /opt/HBJson/monitor.py
+    sed "1866 a \        result = try_download(PATH, TGID_FILE, TGID_URL, (FILE_RELOAD * 86400))" -i /opt/HBJson/monitor.py
+    sed "1866 a \    try:" -i /opt/HBJson/monitor.py
+    sed "1866 a \   " -i /opt/HBJson/monitor.py
+fi
+sed -i "s/Téléchargement.*/Please Wait.../g" /opt/HBJson/templates/loglast_template.html
+sed -i "s/liste .*/<\/div>/g" /opt/HBJson/templates/loglast_template.html
 sudo cat > /lib/systemd/system/hbmon-js.service <<- "EOF"
 [Unit]
 Description=HBJson
@@ -1062,4 +1079,58 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
-#################################
+
+cat > /opt/HBJson/templates/buttonbar.html  <<- "EOFX"
+  <div id="menubar" class="menubar" style="display:none;">
+    <ul>
+      <li><a href="index.html"><img src="sitelogo.png"></a></li>
+    </li>
+
+     <li><a title="Bridge" href="bridges.html"><i class="fas fa-expand-arrows-alt"></i></a></li>
+
+    </li>
+        
+      <li><a  href="#" title="Statistics" Onclick="javascript:stats();"><i class='fa fa-bar-chart'></i></a></li>
+        
+   
+
+      <li><a href="#" title="Log+"><i class='fa fa-list-ul'></i></a>
+        <ul>
+          <li><a target="_self" href="loglast.html">Log+ Total</a></li>
+          <li><a target="_self" href="log.html">Log+ Live</a></li>
+        </ul>
+      </li>
+
+ 
+
+      <div style="display: inline-block; background-color: rgba(255, 128, 39, 0.4); border-radius: 6px;font-size:1.4rem;font-weight:800;color:white;">
+        <li><a href="#" title="Font smaller" Onclick="zoom(-1)" style="width:1.5rem;padding:0 0.25rem 0 0.5rem;">A-</a></li>
+        <li><a href="#" title="Font reset" Onclick="zoom(0)" style="width:1.5rem;padding:0 0.25rem 0 0.25rem;">A</a></li>
+        <li><a href="#" title="Font bigger" Onclick="zoom(1)" style="width:1.5rem;padding:0 0.5rem 0 0.25rem;">A+</a></li>
+      </div>
+
+      <li><a title="Dashboard users" style="width:3rem;"><i class='fa fa-eye'></i><div id="btnlisteners" style="display: inline-block;">0</div></a></li>
+        
+      <li><a href="#" title="Theme" ><i class='fas fa-moon'></i></a>
+        <ul>
+          <li><a href="#" onclick="javascript:document.documentElement.className = 'theme-dark';">Dark</a></li>
+          <li><a href="#"  onclick="javascript:document.documentElement.className = 'theme-light';">Light</a></li>
+          <li><a href="#"  onclick="javascript:themeSettings='auto';adjustTheme()">Auto</a></li>
+          <li><a href="#" onclick="javascript:saveSettings()">Save</a></li>
+        </ul>
+      </li>
+        
+      <li><a href="#" title="Refresh" Onclick="javascript:window.location.reload(false);"><i class='fa fa-refresh'></i></a></li>
+        
+      <li><a href="#" title="FixMenu"><i id="lockButton" class="fas fa-lock"></i></a></li>
+
+      <div id="menuSearch" style="display: none;">
+        <li><input title="Type your contact" type="search" id="search" name="search" placeholder="DMRID/CALLID"></li>
+        <li><button title="Search your contact" type="button" class="fas fa-search" onclick="followupdmrid()"></button></li>
+      </div>
+    </ul>
+</div>
+
+EOFX
+
+######################

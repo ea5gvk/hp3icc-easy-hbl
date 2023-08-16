@@ -32,9 +32,17 @@ sudo nano /opt/HBlink3/hblink.cfg ;;
 2)
 sudo nano /opt/HBlink3/rules.py ;;
 3)
-sudo nano /opt/HBmonitor/config.py ;;
+sudo nano /opt/HBmonitor/config.py &&
+if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl restart hbmon.service
+
+fi;;
 4)
-sudo nano /opt/HBmonitor2/config.py ;;
+sudo nano /opt/HBmonitor2/config.py &&
+if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl restart hbmon2.service
+
+fi;;
 5)
 if systemctl status hblparrot.service |grep active >/dev/null 2>&1
 then sudo systemctl stop hblparrot.service
