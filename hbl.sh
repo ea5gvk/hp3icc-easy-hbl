@@ -1139,3 +1139,31 @@ cat > /opt/HBJson/templates/buttonbar.html  <<- "EOFX"
 EOFX
 
 ######################
+(crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/graph.sh") | crontab -
+(crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/cpu.sh") | crontab -
+
+if systemctl status hbmon2.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl disable hbmon2.service
+
+fi
+if systemctl status hbmon.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl disable hbmon.service
+
+fi
+if systemctl status hbmon-js.service |grep "service; enabled;" >/dev/null 2>&1
+then sudo systemctl disable hbmon-js.service
+
+fi
+if systemctl status hbmon2.service |grep active >/dev/null 2>&1
+then sudo systemctl stop hbmon2.service
+
+fi
+if systemctl status hbmon.service |grep active >/dev/null 2>&1
+then sudo systemctl stop hbmon.service
+
+fi
+if systemctl status hbmon-js.service |grep active >/dev/null 2>&1
+then sudo systemctl stop hbmon-js.service
+
+fi
+##################
