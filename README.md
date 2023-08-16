@@ -2,7 +2,16 @@
 
 <img src="https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl-mon1.jpg" width="550" height="450"><img src="https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl-mon2.jpg" width="550" height="450">
 
+#
+# Info:
 
+HBL+ is a script made at the request of multiple colleagues and friends who are faithful to HBLink for their local amateur radio projects.
+
+This script includes excerpts from different versions of HBLink, it includes compatibility with private calls, it also includes 2 dashboards to choose from classic HBmonitor, or version 2 of sp2ong.
+
+The websock port of both dashboards, has been migrated from TCP 9000 to TCP 9100, the communication port between HBLink and the dashboard has been changed from 4321 to 4322.
+
+Easy menu is also included manipulation to start your hblink with the dashboard of your choice, I hope it will be very useful for you, everything is preconfigured and ready to start your HBLINK.
 
 #
 
