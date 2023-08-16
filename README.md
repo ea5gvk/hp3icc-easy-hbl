@@ -38,7 +38,7 @@ need have curl and sudo installed
    
 # Credits :
 
-Special thanks to colleagues: N0MJS Cortney T. Buffington , IU7IGU Daniele Marra , SP2ONG WALDEMAR OGONOWSKI , for their contributions to the content of this scrip.
+Special thanks to colleagues: N0MJS Cortney T. Buffington , LZ5PN Lachizar Karchev , IU7IGU Daniele Marra , SP2ONG WALDEMAR OGONOWSKI , for their contributions to the content of this scrip.
 
 #
 
