@@ -32,33 +32,6 @@ cd /opt/
 #wget https://bootstrap.pypa.io/get-pip.py
 #python3 get-pip.py
 #############
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rustup.sh
-chmod +x rustup.sh
-./rustup.sh -y
-source "$HOME/.cargo/env"
-rustup update
-rustup update stable
-
-#############
-apt-get install python3-venv -y
-python3 -m venv env0
-source env0/bin/activate
-sudo python3 -m pip install --upgrade pip setuptools
-sudo python3 -m pip install --upgrade cryptography 
-sudo python3 -m pip install --upgrade pyopenssl
-sudo python3 -m pip install --upgrade Twisted
-sudo python3 -m pip install --upgrade dmr_utils3
-sudo python3 -m pip install --upgrade bitstring
-sudo python3 -m pip install --upgrade autobahn
-sudo python3 -m pip install --upgrade jinja2==2.11.3
-sudo python3 -m pip install --upgrade markupsafe==2.0.1
-sudo python3 -m pip install --upgrade bitarray>=0.8.1
-sudo python3 -m pip install --upgrade configparser>=3.0.0
-sudo python3 -m pip install --upgrade aprslib>=0.6.42
-sudo python3 -m pip install --upgrade attrs
-deactivate
-
-##################
 
 apps=("python3-twisted" "python3-bitarray" "python3-dev")
 
@@ -78,6 +51,35 @@ check_and_install() {
 for app in "${apps[@]}"; do
     check_and_install $app
 done
+###############
+cd /
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source $HOME/.cargo/env
+
+
+#############
+apt-get install python3-venv -y
+python3 -m venv env0
+source env0/bin/activate
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python3 get-pip.py --force-reinstall
+python3 -m pip install --upgrade pip setuptools
+python3 -m pip install --upgrade cryptography pyopenssl
+python3 -m pip install --upgrade pip setuptools
+python3 -m pip install --upgrade Twisted
+python3 -m pip install --upgrade dmr_utils3
+python3 -m pip install --upgrade bitstring
+python3 -m pip install --upgrade autobahn
+python3 -m pip install --upgrade jinja2
+python3 -m pip install --upgrade markupsafe
+python3 -m pip install --upgrade bitarray
+python3 -m pip install --upgrade configparser
+python3 -m pip install --upgrade aprslib
+python3 -m pip install --upgrade attrs
+deactivate
+
+##################
+
 if [ -d "/opt/backup" ]
 then
    sudo rm -rf /opt/backup
