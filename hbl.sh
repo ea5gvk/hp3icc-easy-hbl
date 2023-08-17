@@ -526,6 +526,7 @@ sed -i "s/HBMonv2/HBmonitor2/g"  /opt/HBmonitor2/sysinfo/*.sh
 sudo chmod +x /opt/HBmonitor2/sysinfo/*
 sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
 sh /opt/HBmonitor2/sysinfo/graph.sh
+sleep 1
 sh /opt/HBmonitor2/sysinfo/cpu.sh
 
 sed -i "s/9000/9100/g" /opt/HBmonitor2/monitor.py
