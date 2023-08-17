@@ -41,7 +41,7 @@ if [[ "$current_version" != *"$required_version"* ]]; then
         echo 'export PATH=$HOME/opt/python-3.10.1/bin:$PATH' >> ~/.bash_profile
         source ~/.bash_profile
     fi
-    sudo update-alternatives --install /usr/bin/python3 python3 /root/opt/python-3.10.1/bin/python3 2
+  #  sudo update-alternatives --install /usr/bin/python3 python3 /root/opt/python-3.10.1/bin/python3 2
     echo "Python 3.10.1 se ha instalado y configurado."
 else
     echo "Python ya está en la versión 3.10.1 o superior."
