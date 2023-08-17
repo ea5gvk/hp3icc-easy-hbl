@@ -3,12 +3,56 @@ if [[ $EUID -ne 0 ]]; then
 	whiptail --title "FDMR+" --msgbox "Debe ejecutar este script como usuario ROOT" 0 50
 	exit 0
 fi
+##################Python3.10.1
+#!/bin/bash
+
+# Verifica la versión de Python instalada
+current_version=$(python3 --version 2>&1)
+required_version="Python 3.10"
+
+# Compara las versiones (requiere python3.10)
+if [[ "$current_version" != *"$required_version"* ]]; then
+    echo "La versión actual de Python es inferior a 3.10. Actualizando..."
+
+    # Crear y navegar al directorio temporal
+    mkdir -p ~/tmp
+    cd ~/tmp
+
+    # Descargar y descomprimir Python 3.10.1
+    wget https://www.python.org/ftp/python/3.10.1/Python-3.10.1.tgz
+    tar zxvf Python-3.10.1.tgz
+
+    # Navegar al directorio de Python 3.10.1
+    cd Python-3.10.1
+
+    # Configurar e instalar Python 3.10.1 en ~/opt/python-3.10.1
+    ./configure --prefix=$HOME/opt/python-3.10.1
+    make
+    make install
+
+    # Volver al directorio de inicio
+    cd ~
+
+    # Agregar la nueva versión de Python al PATH
+    export PATH=$HOME/opt/python-3.10.1/bin:$PATH
+
+    # Actualizar el perfil de inicio (si estás usando bash)
+    if [[ "$SHELL" == *"/bash" ]]; then
+        echo 'export PATH=$HOME/opt/python-3.10.1/bin:$PATH' >> ~/.bash_profile
+        source ~/.bash_profile
+    fi
+    sudo update-alternatives --install /usr/bin/python3 python3 /root/opt/python-3.10.1/bin/python3 2
+    echo "Python 3.10.1 se ha instalado y configurado."
+else
+    echo "Python ya está en la versión 3.10.1 o superior."
+fi
+####################
 ######################################################################################################################
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 # apt-get upgrade -y
 ######################################################################################################################
 
-apps=("wget" "git" "sudo" "python3" "python3-pip" "python3-distutils" "python3-twisted" "python3-bitarray" "python3-dev" "rrdtool" "openssl" "libssl-dev")
+apps=("wget" "git" "sudo" "python3-pip" "python3-distutils" "python3-twisted" "python3-bitarray" "python3-dev" "rrdtool" "openssl" "libssl-dev")
 
 # Actualizar la lista de paquetes una vez al principio
 sudo apt-get update
@@ -39,6 +83,7 @@ check_and_install() {
 for app in "${apps[@]}"; do
     check_and_install $app
 done
+################
 #install hblink
 
 cd /opt/
