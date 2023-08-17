@@ -3,50 +3,7 @@ if [[ $EUID -ne 0 ]]; then
 	whiptail --title "FDMR+" --msgbox "Debe ejecutar este script como usuario ROOT" 0 50
 	exit 0
 fi
-##################Python3.10.1
-#!/bin/bash
 
-# Verifica la versión de Python instalada
-current_version=$(python3 --version 2>&1)
-required_version="Python 3.10"
-
-# Compara las versiones (requiere python3.10)
-if [[ "$current_version" != *"$required_version"* ]]; then
-    echo "La versión actual de Python es inferior a 3.10. Actualizando..."
-
-    # Crear y navegar al directorio temporal
-    mkdir -p ~/tmp
-    cd ~/tmp
-
-    # Descargar y descomprimir Python 3.10.1
-    wget https://www.python.org/ftp/python/3.10.1/Python-3.10.1.tgz
-    tar zxvf Python-3.10.1.tgz
-
-    # Navegar al directorio de Python 3.10.1
-    cd Python-3.10.1
-
-    # Configurar e instalar Python 3.10.1 en ~/opt/python-3.10.1
-    ./configure --prefix=$HOME/opt/python-3.10.1
-    make
-    make install
-
-    # Volver al directorio de inicio
-    cd ~
-
-    # Agregar la nueva versión de Python al PATH
-    export PATH=$HOME/opt/python-3.10.1/bin:$PATH
-
-    # Actualizar el perfil de inicio (si estás usando bash)
-    if [[ "$SHELL" == *"/bash" ]]; then
-        echo 'export PATH=$HOME/opt/python-3.10.1/bin:$PATH' >> ~/.bash_profile
-        source ~/.bash_profile
-    fi
-    sudo update-alternatives --install /usr/bin/python3 python3 /root/opt/python-3.10.1/bin/python3 2
-    echo "Python 3.10.1 se ha instalado y configurado."
-else
-    echo "Python ya está en la versión 3.10.1 o superior."
-fi
-####################
 ######################################################################################################################
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 # apt-get upgrade -y
@@ -100,6 +57,9 @@ source myenv/bin/activate
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py --force-reinstall
 python3 -m pip install --upgrade pip setuptools
+sudo apt install -y libssl-dev
+python3 -m pip install --upgrade pip
+python3 -m pip install cryptography
 
 # Instalar bibliotecas de Python
 python3 -m pip install --upgrade cryptography pyopenssl autobahn Twisted dmr_utils3 bitstring jinja2 markupsafe bitarray configparser aprslib attrs
