@@ -15,7 +15,7 @@ check_and_install() {
     app=$1
     if ! dpkg -s $app 2>/dev/null | grep -q "Status: install ok installed"; then
         echo "$app no está instalado. Instalando..."
-        sudo apt-get install -y $app
+        sudo apt-get install --only-upgrade $app -y
         echo "$app instalado correctamente."
     else
         echo "$app ya está instalado."
@@ -40,7 +40,7 @@ check_and_install() {
     app=$1
     if ! dpkg -s $app 2>/dev/null | grep -q "Status: install ok installed"; then
         echo "$app no está instalado. Instalando..."
-        sudo apt-get install -y $app
+        sudo apt-get install --only-upgrade $app -y
         echo "$app instalado correctamente."
     else
         echo "$app ya está instalado."
@@ -518,7 +518,7 @@ do
     # Verificar apps
     if ! dpkg -s "$app" >/dev/null 2>&1; then
         # app no instalada
-        sudo apt-get install -y "$app"
+        sudo apt-get install --only-upgrade $app -y
     else
         # app ya instalada
         echo "$app ya instalada"
