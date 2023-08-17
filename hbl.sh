@@ -70,8 +70,9 @@ deactivate
 # Instalar Rust y configurar versión
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source $HOME/.cargo/env
-rustup install 1.58.0
-rustup default 1.58.0
+
+rustup install 1.71.1
+rustup default 1.71.1
 ##################
 
 if [ -d "/opt/backup" ]
