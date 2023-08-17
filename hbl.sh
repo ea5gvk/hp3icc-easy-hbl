@@ -8,9 +8,10 @@ fi
 # apt-get upgrade -y
 ######################################################################################################################
 
-apps=("wget" "git" "sudo" "python3" "python3-pip" "python3-distutils")
+apps=("wget" "git" "sudo" "python3" "python3-pip" "python3-distutils" "python3-twisted" "python3-bitarray" "python3-dev" "rrdtool")
 
-
+# Actualizar la lista de paquetes una vez al principio
+sudo apt-get update
 
 # Función para verificar e instalar una aplicación
 check_and_install() {
@@ -21,7 +22,6 @@ check_and_install() {
         echo "$app instalado correctamente."
     else
         echo "Verificando si hay actualizaciones para $app..."
-        sudo apt-get update
         available_version=$(apt-cache policy $app | grep 'Candidate' | awk '{print $2}')
         current_version=$(dpkg -s $app | grep 'Version' | awk '{print $2}')
         
@@ -44,39 +44,7 @@ done
 cd /opt/
 #wget https://bootstrap.pypa.io/get-pip.py
 #python3 get-pip.py
-#############
-
-apps=("python3-twisted" "python3-bitarray" "python3-dev")
-
-
-# Función para verificar e instalar una aplicación
-check_and_install() {
-    app=$1
-    if ! dpkg -s $app 2>/dev/null | grep -q "Status: install ok installed"; then
-        echo "$app no está instalado. Instalando..."
-        sudo apt-get install $app -y
-        echo "$app instalado correctamente."
-    else
-        echo "Verificando si hay actualizaciones para $app..."
-        sudo apt-get update
-        available_version=$(apt-cache policy $app | grep 'Candidate' | awk '{print $2}')
-        current_version=$(dpkg -s $app | grep 'Version' | awk '{print $2}')
-        
-        if [ "$available_version" != "$current_version" ]; then
-            echo "Hay una versión actualizada de $app disponible. Actualizando..."
-            sudo apt-get install --only-upgrade $app -y
-            echo "$app actualizado correctamente."
-        else
-            echo "$app ya está instalado y actualizado."
-        fi
-    fi
-}
-
-# Verificar e instalar cada aplicación
-for app in "${apps[@]}"; do
-    check_and_install $app
-done
-###############
+############################
 cd /
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source $HOME/.cargo/env
@@ -534,39 +502,6 @@ sed '39 a <!--' -i /opt/HBmonitor2/templates/sysinfo_template.html
 sed '43 a -->' -i /opt/HBmonitor2/templates/sysinfo_template.html
 sed -i "s/<br><br>.*/ Proyect : <a href=\"https:\/\/gitlab.com\/hp3icc\/Easy-HBL\/\" target=\"_blank\">Easy-HBL+<\/a><br\/><br\/><\/span>/g" /opt/HBmonitor2/templates/*.html
 sed -i 's/b1eee9/3bb43d/' /opt/HBmonitor2/templates/moni_template.html
-
-
-apps=("rrdtool")
-
-
-# Función para verificar e instalar una aplicación
-check_and_install() {
-    app=$1
-    if ! dpkg -s $app 2>/dev/null | grep -q "Status: install ok installed"; then
-        echo "$app no está instalado. Instalando..."
-        sudo apt-get install $app -y
-        echo "$app instalado correctamente."
-    else
-        echo "Verificando si hay actualizaciones para $app..."
-        sudo apt-get update
-        available_version=$(apt-cache policy $app | grep 'Candidate' | awk '{print $2}')
-        current_version=$(dpkg -s $app | grep 'Version' | awk '{print $2}')
-        
-        if [ "$available_version" != "$current_version" ]; then
-            echo "Hay una versión actualizada de $app disponible. Actualizando..."
-            sudo apt-get install --only-upgrade $app -y
-            echo "$app actualizado correctamente."
-        else
-            echo "$app ya está instalado y actualizado."
-        fi
-    fi
-}
-
-# Verificar e instalar cada aplicación
-for app in "${apps[@]}"; do
-    check_and_install $app
-done
-
 sed -i "s/HBMonv2/HBmonitor2/g"  /opt/HBmonitor2/sysinfo/*.sh
 sudo chmod +x /opt/HBmonitor2/sysinfo/*
 sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
