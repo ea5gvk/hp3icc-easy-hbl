@@ -8,7 +8,7 @@ fi
 # apt-get upgrade -y
 ######################################################################################################################
 
-apps=("wget" "git" "sudo" "python3" "python3-pip" "python3-distutils" "python3-twisted" "python3-bitarray" "python3-dev" "rrdtool")
+apps=("wget" "git" "sudo" "python3" "python3-pip" "python3-distutils" "python3-twisted" "python3-bitarray" "python3-dev" "rrdtool" "openssl" "libssl-dev")
 
 # Actualizar la lista de paquetes una vez al principio
 sudo apt-get update
@@ -46,10 +46,6 @@ cd /opt/
 #python3 get-pip.py
 ############################
 cd /
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source $HOME/.cargo/env
-
-
 #############
 apt-get install python3-venv -y
 python3 -m venv env0
@@ -58,19 +54,25 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py --force-reinstall
 python3 -m pip install --upgrade pip setuptools
 python3 -m pip install --upgrade cryptography pyopenssl
+
+deactivate
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source $HOME/.cargo/env
+rustup install 1.58.0
+rustup default 1.58.0
+
+python3 -m pip install --upgrade autobahn
 python3 -m pip install --upgrade pip setuptools
 python3 -m pip install --upgrade Twisted
 python3 -m pip install --upgrade dmr_utils3
 python3 -m pip install --upgrade bitstring
-python3 -m pip install --upgrade autobahn
 python3 -m pip install --upgrade jinja2
 python3 -m pip install --upgrade markupsafe
 python3 -m pip install --upgrade bitarray
 python3 -m pip install --upgrade configparser
 python3 -m pip install --upgrade aprslib
 python3 -m pip install --upgrade attrs
-deactivate
-
+python3 -m pip install --upgrade pyopenssl
 ##################
 
 if [ -d "/opt/backup" ]
