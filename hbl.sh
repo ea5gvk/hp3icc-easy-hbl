@@ -44,8 +44,9 @@ done
 #install hblink
 
 cd /opt/
-#wget https://bootstrap.pypa.io/get-pip.py
-#python3 get-pip.py
+wget https://bootstrap.pypa.io/pip/get-pip.py
+python3 get-pip.py
+rm get-pip.py
 ############################
 cd /
 #############
@@ -54,12 +55,11 @@ python3 -m venv myenv
 source myenv/bin/activate
 
 # Instalar pip y paquetes en el entorno virtual
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py --force-reinstall
-python3 -m pip install --upgrade pip setuptools
+##python3 get-pip.py --force-reinstall
+#python3 -m pip install --upgrade pip setuptools
 sudo apt install -y libssl-dev
-python3 -m pip install --upgrade pip
-python3 -m pip install cryptography
+#python3 -m pip install --upgrade pip
+#python3 -m pip install cryptography
 
 # Instalar bibliotecas de Python
 python3 -m pip install --upgrade cryptography pyopenssl autobahn Twisted dmr_utils3 bitstring jinja2 markupsafe bitarray configparser aprslib attrs
