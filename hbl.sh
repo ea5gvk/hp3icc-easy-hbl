@@ -48,31 +48,25 @@ cd /opt/
 cd /
 #############
 apt-get install python3-venv -y
-python3 -m venv env0
-source env0/bin/activate
+python3 -m venv myenv
+source myenv/bin/activate
+
+# Instalar pip y paquetes en el entorno virtual
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py --force-reinstall
 python3 -m pip install --upgrade pip setuptools
-python3 -m pip install --upgrade cryptography pyopenssl
 
+# Instalar bibliotecas de Python
+python3 -m pip install --upgrade cryptography pyopenssl autobahn Twisted dmr_utils3 bitstring jinja2 markupsafe bitarray configparser aprslib attrs
+
+# Desactivar el entorno virtual
 deactivate
+
+# Instalar Rust y configurar versión
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source $HOME/.cargo/env
 rustup install 1.58.0
 rustup default 1.58.0
-
-python3 -m pip install --upgrade autobahn
-python3 -m pip install --upgrade pip setuptools
-python3 -m pip install --upgrade Twisted
-python3 -m pip install --upgrade dmr_utils3
-python3 -m pip install --upgrade bitstring
-python3 -m pip install --upgrade jinja2
-python3 -m pip install --upgrade markupsafe
-python3 -m pip install --upgrade bitarray
-python3 -m pip install --upgrade configparser
-python3 -m pip install --upgrade aprslib
-python3 -m pip install --upgrade attrs
-python3 -m pip install --upgrade pyopenssl
 ##################
 
 if [ -d "/opt/backup" ]
