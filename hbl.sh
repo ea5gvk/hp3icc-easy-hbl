@@ -57,7 +57,7 @@ python3 get-pip.py --force-reinstall
 python3 -m pip install --upgrade pip setuptools
 
 # Instalar bibliotecas de Python
-python3.11 -m pip install --upgrade cryptography pyopenssl autobahn Twisted dmr_utils3 bitstring jinja2 markupsafe bitarray configparser aprslib attrs
+python3 -m pip install --upgrade cryptography pyopenssl autobahn Twisted dmr_utils3 bitstring jinja2 markupsafe bitarray configparser aprslib attrs
 
 # Desactivar el entorno virtual
 deactivate
