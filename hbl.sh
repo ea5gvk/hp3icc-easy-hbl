@@ -1,15 +1,10 @@
-#!/bin/sh
+#!/bin/bash
+
+# Verificar si el usuario tiene permisos de root
 if [[ $EUID -ne 0 ]]; then
-	whiptail --title "FDMR+" --msgbox "Debe ejecutar este script como usuario ROOT" 0 50
-	exit 0
+    echo "Este script debe ejecutarse como usuario ROOT"
+    exit 1
 fi
-
-######################################################################################################################
-(crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
-# apt-get upgrade -y
-######################################################################################################################
-
-apps=("wget" "git" "sudo" "python3-pip" "python3-distutils" "python3-twisted" "python3-bitarray" "python3-dev" "rrdtool" "openssl" "libssl-dev")
 
 # Actualizar la lista de paquetes una vez al principio
 sudo apt-get update
@@ -17,7 +12,7 @@ sudo apt-get update
 # Función para verificar e instalar una aplicación
 check_and_install() {
     app=$1
-    if ! dpkg -s $app 2>/dev/null | grep -q "Status: install ok installed"; then
+    if ! dpkg -s $app >/dev/null 2>&1; then
         echo "$app no está instalado. Instalando..."
         sudo apt-get install $app -y
         echo "$app instalado correctamente."
@@ -36,36 +31,35 @@ check_and_install() {
     fi
 }
 
+# Lista de aplicaciones para verificar e instalar
+apps=("wget" "git" "sudo" "python3-pip" "python3-distutils" "python3-twisted" "python3-bitarray" "python3-dev" "rrdtool" "openssl" "libssl-dev")
+
 # Verificar e instalar cada aplicación
 for app in "${apps[@]}"; do
     check_and_install $app
 done
-################
-#install hblink
 
+# Verificar y actualizar python3-venv si no está instalado
+if ! dpkg -s python3-venv >/dev/null 2>&1; then
+    echo "python3-venv no está instalado. Instalando..."
+    sudo apt-get install python3-venv -y
+    echo "python3-venv instalado correctamente."
+fi
+
+# Crear y activar un entorno virtual
 cd /opt/
-wget https://bootstrap.pypa.io/pip/get-pip.py
-python3 get-pip.py
-rm get-pip.py
-############################
-cd /
-#############
-apt-get install python3-venv -y
 python3 -m venv myenv
 source myenv/bin/activate
 
-# Instalar pip y paquetes en el entorno virtual
-##python3 get-pip.py --force-reinstall
-#python3 -m pip install --upgrade pip setuptools
+# Instalar pip en el entorno virtual
+wget https://bootstrap.pypa.io/pip/get-pip.py
+python3 get-pip.py
+rm get-pip.py
+
+# Instalar paquetes en el entorno virtual
 sudo apt install -y libssl-dev
-#python3 -m pip install --upgrade pip
-#python3 -m pip install cryptography
-
-# Instalar bibliotecas de Python
-python3 -m pip install --upgrade cryptography pyopenssl autobahn Twisted dmr_utils3 bitstring jinja2 markupsafe bitarray configparser aprslib attrs
-
-# Desactivar el entorno virtual
-deactivate
+python3 -m pip install --no-cache-dir --upgrade pip setuptools
+python3 -m pip install --no-cache-dir cryptography pyopenssl autobahn Twisted dmr_utils3 bitstring jinja2 markupsafe bitarray configparser aprslib attrs
 
 # Instalar Rust y configurar versión
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -73,6 +67,30 @@ source $HOME/.cargo/env
 
 rustup install 1.71.1
 rustup default 1.71.1
+
+# Desactivar el entorno virtual
+deactivate
+
+# Crear archivo requirements.txt y instalar paquetes
+cat <<EOF | sudo tee /opt/requirements.txt
+cryptography
+pyopenssl
+autobahn
+Twisted
+dmr_utils3
+bitstring
+jinja2
+markupsafe
+bitarray
+configparser
+aprslib
+attrs
+EOF
+
+sudo pip install --no-cache-dir --upgrade -r /opt/requirements.txt
+
+echo "Instalación completa."
+
 ##################
 
 if [ -d "/opt/backup" ]
