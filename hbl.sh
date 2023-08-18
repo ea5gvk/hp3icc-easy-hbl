@@ -132,7 +132,8 @@ mv /opt/backup/dmr_utils3/ /opt/
 cd /opt/
 git clone https://github.com/iu7igu/hblink3-aprs.git /opt/HBlink3
 cd /opt/HBlink3
-sudo git checkout private-original
+sudo git checkout private-call
+#private-original
 #private-call
 
 #chmod +x install.sh
@@ -819,13 +820,13 @@ TGID_TS2_ACL: PERMIT:ALL
 # ACLs:
 # See comments in the GLOBAL stanza
 
-[REPEATER-1]
+[REPEATER-0]
 MODE: PEER
 ENABLED: False
 LOOSE: True
 EXPORT_AMBE: False
 IP:
-PORT:53101
+PORT:54101
 MASTER_IP: 3021.master.brandmeister.network
 MASTER_PORT: 62031
 PASSPHRASE: passw0rd
@@ -859,7 +860,7 @@ ENABLED: False
 LOOSE: True
 EXPORT_AMBE: False
 IP: 
-PORT: 53102
+PORT: 54102
 MASTER_IP: 172.16.1.1
 MASTER_PORT: 62030
 PASSPHRASE: passw0rd
