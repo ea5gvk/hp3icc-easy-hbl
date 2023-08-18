@@ -80,7 +80,7 @@ Twisted
 dmr_utils3
 bitstring
 jinja2
-markupsafe
+MarkupSafe
 bitarray
 configparser
 aprslib
