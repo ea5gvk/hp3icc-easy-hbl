@@ -132,8 +132,9 @@ mv /opt/backup/dmr_utils3/ /opt/
 cd /opt/
 git clone https://github.com/iu7igu/hblink3-aprs.git /opt/HBlink3
 cd /opt/HBlink3
-sudo git checkout private-call
-#sudo pip install -U -r requirements.txt
+sudo git checkout private-original
+#private-call
+
 #chmod +x install.sh
 
 #./install.sh
