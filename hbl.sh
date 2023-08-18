@@ -85,6 +85,10 @@ bitarray
 configparser
 aprslib
 attrs
+mysql-connector-python
+pandas
+xlsxwriter
+cursor
 EOF
 
 sudo pip install --no-cache-dir --upgrade -r /opt/requirements.txt
@@ -142,8 +146,22 @@ cd /opt/HBmonitor/
 #chmod +x install.sh
 #./install.sh
 
-rm /opt/HBmonitor/log/*
-rm /opt/HBmonitor/*.json
+if [ -n "$(ls -A /opt/HBmonitor/log/)" ]; then
+    rm /opt/HBmonitor/log/*
+fi
+if [ -f "/opt/HBmonitor/talkgroup_ids.json" ]
+then
+  rm /opt/HBmonitor/talkgroup_ids.json
+fi
+if [ -f "/opt/HBmonitor/subscriber_ids.jsonn" ]
+then
+  rm /opt/HBmonitor/subscriber_ids.json
+fi
+if [ -f "/opt/HBmonitor/peer_ids.json " ]
+then
+  rm /opt/HBmonitor/peer_ids.json 
+fi
+
 cp /opt/HBmonitor/config_SAMPLE.py /opt/HBmonitor/config.py
 #cp /opt/HBmonitor/utils/hbmon.service /lib/systemd/system/
 cp /opt/HBmonitor/index_template.html /opt/HBmonitor/index.html
@@ -201,8 +219,21 @@ sudo git checkout webserver-python
 #chmod +x install.sh
 #./install.sh
 #mv /opt/backup/dmr_utils3/ /opt/
-rm /opt/HBmonitor2/log/*
-rm /opt/HBmonitor2/*.json
+if [ -n "$(ls -A /opt/HBmonitor/log/)" ]; then
+    rm /opt/HBmonitor/log/*
+fi
+if [ -f "/opt/HBmonitor/talkgroup_ids.json" ]
+then
+  rm /opt/HBmonitor/talkgroup_ids.json
+fi
+if [ -f "/opt/HBmonitor/subscriber_ids.jsonn" ]
+then
+  rm /opt/HBmonitor/subscriber_ids.json
+fi
+if [ -f "/opt/HBmonitor/peer_ids.json " ]
+then
+  rm /opt/HBmonitor/peer_ids.json 
+fi
 cp /opt/HBmonitor2/config_SAMPLE.py /opt/HBmonitor2/config.py
 #cp /opt/HBmonitor/utils/hbmon.service /lib/systemd/system/
 cp /opt/HBmonitor2/index_template.html /opt/HBmonitor2/index.html
@@ -313,7 +344,7 @@ cat > /opt/HBmonitor2/templates/main_table.html  <<- "EOFT"
 {% else %}
          <table style='width:1100px; font: 13pt arial, sans-serif; margin-top:8px;'>
              <tr style='border:none; background-color:#f1f1f1;'>
-             <td style='border:none;height:60px;'><font color=brown><b><center>Waiting for Data from FreeDMR Server ...</center></b></td>
+             <td style='border:none;height:60px;'><font color=brown><b><center>Waiting for Data from DMR Server ...</center></b></td>
              </tr>
             </table>
  {% endif %}
@@ -1072,4 +1103,5 @@ then sudo systemctl stop hbmon.service
 
 fi
 
-##################
+
+########################

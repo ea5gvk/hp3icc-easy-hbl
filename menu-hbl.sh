@@ -89,8 +89,21 @@ sudo systemctl stop hblink.service
 sudo systemctl disable hblink.service ;;
 7)
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
-rm /opt/HBmonitor/*.json
-rm /opt/HBmonitor/log/*
+if [ -n "$(ls -A /opt/HBmonitor/log/)" ]; then
+    rm /opt/HBmonitor/log/*
+fi
+if [ -f "/opt/HBmonitor/talkgroup_ids.json" ]
+then
+  rm /opt/HBmonitor/talkgroup_ids.json
+fi
+if [ -f "/opt/HBmonitor/subscriber_ids.jsonn" ]
+then
+  rm /opt/HBmonitor/subscriber_ids.json
+fi
+if [ -f "/opt/HBmonitor/peer_ids.json " ]
+then
+  rm /opt/HBmonitor/peer_ids.json 
+fi
 (crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/graph.sh") | crontab -
 (crontab -l | grep -v "sh /opt/HBmonitor2/sysinfo/cpu.sh") | crontab -
 
@@ -116,8 +129,21 @@ sudo systemctl start hbmon.service ;;
 (crontab -l; echo "* */1 * * * sync ; echo 3 > /proc/sys/vm/drop_caches >/dev/null 2>&1")|awk '!x[$0]++'|crontab -
 (crontab -l; echo "*/5 * * * * sh /opt/HBmonitor2/sysinfo/graph.sh")|awk '!x[$0]++'|crontab -
 (crontab -l; echo "*/2 * * * * sh /opt/HBmonitor2/sysinfo/cpu.sh")|awk '!x[$0]++'|crontab -
-rm /opt/HBmonitor2/*.json
-rm /opt/HBmonitor2/log/*
+if [ -n "$(ls -A /opt/HBmonitor2/log/)" ]; then
+    rm /opt/HBmonitor2/log/*
+fi
+if [ -f "/opt/HBmonitor2/talkgroup_ids.json" ]
+then
+  rm /opt/HBmonitor2/talkgroup_ids.json
+fi
+if [ -f "/opt/HBmonitor2/subscriber_ids.jsonn" ]
+then
+  rm /opt/HBmonitor2/subscriber_ids.json
+fi
+if [ -f "/opt/HBmonitor2/peer_ids.json " ]
+then
+  rm /opt/HBmonitor2/peer_ids.json 
+fi
 sh /opt/HBmonitor2/sysinfo/rrd-db.sh &&
 sh /opt/HBmonitor2/sysinfo/graph.sh
 sleep 1
