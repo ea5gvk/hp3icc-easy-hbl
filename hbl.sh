@@ -130,9 +130,10 @@ mv /opt/backup/dmr_utils3/ /opt/
 
 #mv /opt/backup/HBlink3/ /opt/
 cd /opt/
-git clone https://github.com/iu7igu/hblink3-aprs.git /opt/HBlink3
+#git clone https://github.com/iu7igu/hblink3-aprs.git /opt/HBlink3
+git clone https://github.com/iu7igu/hblink3.git /opt/HBlink3
 cd /opt/HBlink3
-sudo git checkout private-call
+sudo git checkout aprs_features
 #private-original
 #private-call
 
@@ -964,8 +965,38 @@ BRIDGES = {
 }
 
 
+'''
+list the names of each system that should bridge unit to unit (individual) calls.
+'''
 
 UNIT = ['ONE', 'TWO']
+
+'''
+Unit Call flood timeout:
+The amount of time to keep sending private calls to a single system before
+flooding all systems with the call. A higher value should be set for systems where subscribers
+are not moving between systems often. A lower value should be set for systems that have subscribers
+moving between systems often.
+
+Time is in minutes.
+'''
+UNIT_TIME = 15
+
+'''
+Input the DMR ID and SYSTEM of a subscriber that you would like to have always have private calls routed.
+This will not flood all systems.
+'''
+STATIC_UNIT = [
+#    [ 123, 'CLIENT-1'],
+#    [ 456, 'CLIENT-1'],
+#    [ 789, 'MASTER-1']
+    ]
+
+
+'''
+This is for testing the syntax of the file. It won't eliminate all errors, but running this file
+like it were a Python program itself will tell you if the syntax is correct!
+'''
 
 if __name__ == '__main__':
     from pprint import pprint
