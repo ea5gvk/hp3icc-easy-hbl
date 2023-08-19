@@ -7,7 +7,7 @@
 
 HBL+ is a script made at the request of multiple colleagues and friends who are faithful to HBLink for their local amateur radio projects.
 
-This script includes excerpts from different versions of HBLink, it includes compatibility with private calls, it also includes 2 dashboards to choose from classic HBmonitor, or version 2 of sp2ong.
+This script includes excerpts from different versions of HBLink, it includes compatibility with private calls, it also includes 3 dashboards to choose from classic HBmonitor, HBmonitor2 by sp2ong, or HBJson by f4jdn.
 
 The websock port of both dashboards, has been migrated from TCP 9000 to TCP 9100, the communication port between HBLink and the dashboard has been changed from 4321 to 4322.
 
@@ -46,7 +46,7 @@ need have curl and sudo installed
    
 # Credits :
 
-Special thanks to colleagues: N0MJS Cortney T. Buffington , LZ5PN Lachizar Karchev , IU7IGU Daniele Marra , SP2ONG WALDEMAR OGONOWSKI , for their contributions to the content of this scrip.
+Special thanks to colleagues: N0MJS Cortney T. Buffington , LZ5PN Lachizar Karchev , IU7IGU Daniele Marra , SP2ONG WALDEMAR OGONOWSKI , F4JDN Jean-Michel COHEN , for their contributions to the content of this scrip.
 
 #
 
@@ -61,6 +61,8 @@ Special thanks to colleagues: N0MJS Cortney T. Buffington , LZ5PN Lachizar Karch
  * https://github.com/sp2ong/HBmonitor
 
  * https://github.com/sp2ong/HBMonv2
+
+ * https://github.com/Avrahqedivra/HBJson
   
  
 
