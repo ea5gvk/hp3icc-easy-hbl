@@ -1109,11 +1109,91 @@ EOF
 
 systemctl daemon-reload
 
-#systemctl restart hblparrot.service
-#systemctl restart hblink.service
-#systemctl restart hbmon.service
+##################
+#HBMon-Json
+#########################
+cd /opt
+if [ -f "/opt/HBJson/" ]
+then
+  rm -rf /opt/HBJson/
+fi
+
+git clone https://github.com/Avrahqedivra/HBJson.git
+cd /opt/HBJson
+#sudo git checkout dev
+
+cp config_SAMPLE.py config.py
+sed -i "s/JSON_SERVER_PORT =.*/JSON_SERVER_PORT = 80/g" /opt/HBJson/config.py
+sed -i "s/HBLINK_PORT     =.*/HBLINK_PORT     = 4322/g" /opt/HBJson/config.py
+sed -i "s/SOCKET_SERVER_PORT =.*/SOCKET_SERVER_PORT = 9100/g" /opt/HBJson/config.py
+sed -i "s/FREQUENCY       =.*/FREQUENCY       = 1/g" /opt/HBJson/config.py
+sed -i "s/FILE_RELOAD     =.*/FILE_RELOAD     = 1/g" /opt/HBJson/config.py
+sed -i "s/SUBSCRIBER_URL  =.*/SUBSCRIBER_URL  = 'http:\/\/datafiles.ddns.net:8888\/user.json'/g" /opt/HBJson/config.py
+sed -i "s/LOCAL_SUBSCRIBER_URL  =.*/LOCAL_SUBSCRIBER_URL  = 'local_subscriber_ids.json' /g" /opt/HBJson/config.py
+
+if [ "$(cat /opt/HBJson/config.py | grep 'TGID_URL')" != "" ]; then
+sed -i "s/TGID_URL.*/TGID_URL        = 'http:\/\/datafiles.ddns.net:8888\/talkgroup_ids.json'/g" /opt/HBJson/config.py
+else
+sed "108 a TGID_URL        = 'http://datafiles.ddns.net:8888/talkgroup_ids.json'" -i /opt/HBJson/config.py 
+fi
+
+if ! grep -q 'TGID_URL' /opt/HBJson/monitor.py; then
+    sed "1866 a \        pass" -i /opt/HBJson/monitor.py
+    sed "1866 a \    except:" -i /opt/HBJson/monitor.py
+    sed "1866 a \        logging.info(result)" -i /opt/HBJson/monitor.py
+    sed "1866 a \        result = try_download(PATH, TGID_FILE, TGID_URL, (FILE_RELOAD * 86400))" -i /opt/HBJson/monitor.py
+    sed "1866 a \    try:" -i /opt/HBJson/monitor.py
+    sed "1866 a \   " -i /opt/HBJson/monitor.py
+fi
+
+sed "60 a -->" -i /opt/HBJson/templates/buttonbar.html
+sed "37 a <\!--" -i /opt/HBJson/templates/buttonbar.html
+sed "33 a -->" -i /opt/HBJson/templates/buttonbar.html
+sed "32 a <\!--" -i /opt/HBJson/templates/buttonbar.html
+sed "28 a -->" -i /opt/HBJson/templates/buttonbar.html
+sed "4 a <\!--" -i /opt/HBJson/templates/buttonbar.html
+sed "4 a \      <li><a target=\"_self\" href=\"bridges.html\" title=\"Bridge\"><i class='fas fa-arrows-alt'><\/i><\/a><\/li>" -i /opt/HBJson/templates/buttonbar.html
+
+if [ -n "$(ls -A /opt/HBJson/log/)" ]; then
+    rm /opt/HBJson/log/*
+fi
+if [ -f "/opt/HBJson/talkgroup_ids.json" ]
+then
+  rm /opt/HBJson/talkgroup_ids.json
+fi
+if [ -f "/opt/HBJson/subscriber_ids.jsonn" ]
+then
+  rm /opt/HBJson/subscriber_ids.json
+fi
+if [ -f "/opt/HBJson/rptrs.json" ]
+then
+  rm /opt/HBJson/rptrs.json
+fi
+
+sudo cat > /lib/systemd/system/hbmon-js.service <<- "EOF"
+[Unit]
+Description=HBJson
+# To make the network-online.target available
+# systemctl enable systemd-networkd-wait-online.service
+
+After=network-online.target syslog.target
+Wants=network-online.target
+
+[Service]
+StandardOutput=null
+WorkingDirectory=/opt/HBJson
+RestartSec=3
+ExecStart=/usr/bin/python3 /opt/HBJson/monitor.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+
+EOF
 
 
+systemctl daemon-reload
+########################
 #########################
 
 
@@ -1138,4 +1218,4 @@ then sudo systemctl stop hbmon.service
 fi
 
 
-########################
+###########################
