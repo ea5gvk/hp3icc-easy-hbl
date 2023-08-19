@@ -1,6 +1,6 @@
 # Easy-HBLink+  
 
-<img src="https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl-mon1.jpg" width="550" height="450"><img src="https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl-mon2.jpg" width="550" height="450">
+<img src="https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl-mon1.jpg" width="550" height="450"><img src="https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl-mon2.jpg" width="550" height="450"><img src="https://gitlab.com/hp3icc/easy-hbl/-/raw/main/hbl-mon3.jpg" width="550" height="450">
 
 #
 # Info:
