@@ -1113,7 +1113,7 @@ systemctl daemon-reload
 #HBMon-Json
 #########################
 cd /opt
-if [ -f "/opt/HBJson/" ]
+if [ -d "/opt/HBJson/" ]
 then
   rm -rf /opt/HBJson/
 fi
@@ -1169,6 +1169,10 @@ if [ -f "/opt/HBJson/rptrs.json" ]
 then
   rm /opt/HBJson/rptrs.json
 fi
+variable2=$(date +'%Y' | tail -c 5)
+sed -i "s/F4JDN <\/a>2021.*/F4JDN <\/a>2021-$variable2. Proyect : <a href=\"https:\/\/gitlab.com\/hp3icc\/Easy-HBL\/\" target=\"_blank\">Easy-HBL+<\/a><br\/><br\/>/g" /opt/HBJson/templates/*.html
+sed -i "s/F4JDN <\/a>2021.*/F4JDN <\/a>2021-$variable2. Proyect : <a href=\"https:\/\/gitlab.com\/hp3icc\/Easy-HBL\/\" target=\"_blank\">Easy-HBL+<\/a><br\/><br\/>/g" /opt/HBJson/html/*.html
+
 
 sudo cat > /lib/systemd/system/hbmon-js.service <<- "EOF"
 [Unit]
