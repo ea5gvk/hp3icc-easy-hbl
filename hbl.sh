@@ -1173,6 +1173,13 @@ variable2=$(date +'%Y' | tail -c 5)
 sed -i "s/F4JDN <\/a>2021.*/F4JDN <\/a>2021-$variable2. Proyect : <a href=\"https:\/\/gitlab.com\/hp3icc\/Easy-HBL\/\" target=\"_blank\">Easy-HBL+<\/a><br\/><br\/>/g" /opt/HBJson/templates/*.html
 sed -i "s/F4JDN <\/a>2021.*/F4JDN <\/a>2021-$variable2. Proyect : <a href=\"https:\/\/gitlab.com\/hp3icc\/Easy-HBL\/\" target=\"_blank\">Easy-HBL+<\/a><br\/><br\/>/g" /opt/HBJson/html/*.html
 
+sed -i "s/liste en cours...<\/div>/...<\/div>/g" /opt/HBJson/templates/*.html
+sed -i "s/Téléchargement de la/Please Wait/g" /opt/HBJson/templates/*.html
+
+sed -i "s/Licensed HAM/HBLink3 DMR/g" /opt/HBJson/config.py
+sed -i "s/VOIP and Unlicensed/HBJson Dasboard/g" /opt/HBJson/config.py
+
+
 
 sudo cat > /lib/systemd/system/hbmon-js.service <<- "EOF"
 [Unit]
