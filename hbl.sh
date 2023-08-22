@@ -744,8 +744,8 @@ PEER_FILE: peer_ids.json
 SUBSCRIBER_FILE: subscriber_ids.json
 TGID_FILE: talkgroup_ids.json
 PEER_URL: https://www.radioid.net/static/rptrs.json
-SUBSCRIBER_URL: https://www.radioid.net/static/users.json
-STALE_DAYS: 7
+SUBSCRIBER_URL: http://datafiles.ddns.net:8888/user.json
+STALE_DAYS: 1
 
 # OPENBRIDGE INSTANCES - DUPLICATE SECTION FOR MULTIPLE CONNECTIONS
 # OpenBridge is a protocol originall created by DMR+ for connection between an
